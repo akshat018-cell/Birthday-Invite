@@ -112,22 +112,29 @@ export function PhotosSection() {
               }
             />
           ) : (
-            /* Tasteful placeholder — no broken image icon */
-            <button
-              type="button"
+            /* Deliberate Neon Placeholder with Shimmer */
+            <div
               onClick={() => openLightbox(activePhotoIndex)}
-              className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-purple-950/40 to-black cursor-pointer"
+              className="relative w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0d0918] cursor-pointer overflow-hidden border border-purple-500/20"
             >
-              <div className="w-16 h-16 rounded-2xl bg-purple-500/15 border border-purple-400/40 flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(168,85,255,0.3)]">
-                <Sparkles className="w-8 h-8 text-purple-400 animate-pulse" />
+              {/* Subtle animated shimmer */}
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{ repeat: Infinity, duration: 2.2, ease: "linear" }}
+                className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent pointer-events-none"
+              />
+
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-purple-500/15 border border-purple-400/40 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(168,85,255,0.25)]">
+                <Camera className="w-7 h-7 text-purple-400" />
               </div>
-              <span className="text-xs font-heading font-bold text-white uppercase tracking-wider">
-                Photo {activePhotoIndex + 1}
+              <span className="relative z-10 text-xs font-heading font-bold text-white uppercase tracking-wider">
+                Photo coming soon
               </span>
-              <span className="text-[10px] font-mono text-purple-300/80 mt-1">
-                Image loading…
+              <span className="relative z-10 text-[10px] font-mono text-purple-300/70 mt-1">
+                Memory 0{activePhotoIndex + 1}
               </span>
-            </button>
+            </div>
           )}
 
           {/* Floating Caption Overlay — only when caption exists */}
@@ -239,10 +246,18 @@ export function PhotosSection() {
                   }
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-                  <Sparkles className="w-12 h-12 text-purple-400 mb-2" />
-                  <p className="font-heading text-sm text-white font-bold">
-                    Photo {selectedPhoto + 1}
+                <div className="relative w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0d0918] overflow-hidden">
+                  <motion.div
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "200%" }}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: "linear" }}
+                    className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent pointer-events-none"
+                  />
+                  <div className="relative z-10 w-14 h-14 rounded-2xl bg-purple-500/15 border border-purple-400/40 flex items-center justify-center mb-3">
+                    <Camera className="w-7 h-7 text-purple-400" />
+                  </div>
+                  <p className="relative z-10 font-heading text-xs text-white font-bold uppercase tracking-wider">
+                    Photo coming soon
                   </p>
                 </div>
               )}
