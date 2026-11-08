@@ -6,18 +6,12 @@ import { Smartphone, Sparkles, Copy, Check } from "lucide-react";
 import { eventConfig } from "@/config/event";
 
 export function DesktopBlocker() {
-  const [currentUrl, setCurrentUrl] = useState<string>("https://angad14.party");
+  const deployedUrl = eventConfig.deployedUrl;
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setCurrentUrl(window.location.href);
-    }
-  }, []);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(currentUrl);
+      await navigator.clipboard.writeText(deployedUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {

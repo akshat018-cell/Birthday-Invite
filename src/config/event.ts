@@ -27,6 +27,8 @@ export interface RsvpStatus {
 export interface EventConfig {
   guestOfHonour: string;
   turningAge: number;
+  /** Primary deployed Vercel URL */
+  deployedUrl: string;
   /** ISO Date string YYYY-MM-DD */
   date: string;
   /** Timezone for countdown and event timing */
@@ -81,6 +83,7 @@ export interface EventConfig {
 export const eventConfig: EventConfig = {
   guestOfHonour: "Angad Khandelwal",
   turningAge: 14,
+  deployedUrl: "https://angad-birthday.vercel.app/",
   date: "2026-11-11",
   timezone: "Asia/Kolkata",
 
