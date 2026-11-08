@@ -14,22 +14,22 @@ const STEPS: TourStep[] = [
   {
     targetId: "hero",
     title: "Welcome! 🎉",
-    body: "This is Angad's birthday invite. Scroll down to explore the party details.",
+    body: "This is Angad's birthday invite. Scroll to explore the details.",
   },
   {
     targetId: "countdown",
     title: "Countdown ⏱️",
-    body: "Watch the live countdown to the big day — and add it to your calendar!",
+    body: "Live countdown to the milestone. Save it to your calendar!",
   },
   {
     targetId: "rsvp",
     title: "RSVP 💬",
-    body: "Tell Angad if you're coming. It only takes 10 seconds via WhatsApp.",
+    body: "Confirm if you're coming on WhatsApp in 10 seconds.",
   },
   {
     targetId: "game",
     title: "Mini-Game 🎮",
-    body: "Flip cards to match Angad's faces. Win to unlock a secret message!",
+    body: "Match Angad's faces to unlock a secret message!",
   },
 ];
 
@@ -55,7 +55,6 @@ export function GuidedTour() {
     } catch {
       // ignore
     }
-    // Remove scroll lock
     document.body.style.overflow = "";
   }, []);
 
@@ -66,13 +65,11 @@ export function GuidedTour() {
   }, [visible, step]);
 
   useEffect(() => {
-    // First visit only
     try {
       if (localStorage.getItem(STORAGE_KEY)) return;
     } catch {
       // ignore storage errors
     }
-    // Small delay to let page settle
     const t = setTimeout(() => {
       setVisible(true);
       document.body.style.overflow = "hidden";
@@ -80,7 +77,6 @@ export function GuidedTour() {
     return () => clearTimeout(t);
   }, []);
 
-  // Scroll target into view and update rect
   useEffect(() => {
     if (!visible) return;
     const el = document.getElementById(currentStep.targetId);
@@ -108,7 +104,6 @@ export function GuidedTour() {
 
   if (!visible) {
     return (
-      /* Replay "?" button — always present for returning visitors */
       <button
         type="button"
         aria-label="Replay guided tour"
@@ -117,7 +112,7 @@ export function GuidedTour() {
           setVisible(true);
           document.body.style.overflow = "hidden";
         }}
-        className="fixed bottom-6 left-4 z-30 tap-target w-10 h-10 rounded-full bg-white/10 border border-white/20 text-white text-sm font-bold flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all"
+        className="fixed bottom-6 left-4 z-30 tap-target w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all shadow-md backdrop-blur-sm"
       >
         ?
       </button>
@@ -128,7 +123,7 @@ export function GuidedTour() {
     <AnimatePresence>
       {visible && (
         <>
-          {/* Dark backdrop */}
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -137,89 +132,96 @@ export function GuidedTour() {
             onClick={dismiss}
           />
 
-          {/* Spotlight — highlights the target element */}
+          {/* Spotlight outline */}
           {rect && (
             <motion.div
               key={step}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed z-40 rounded-2xl ring-4 ring-cyan-400 ring-offset-2 ring-offset-transparent pointer-events-none"
+              className="fixed z-40 rounded-2xl ring-2 ring-cyan-400 ring-offset-2 ring-offset-transparent pointer-events-none"
               style={{
                 top: rect.top - 6,
                 left: rect.left - 6,
                 width: rect.width + 12,
                 height: rect.height + 12,
-                boxShadow: "0 0 0 9999px rgba(0,0,0,0.6)",
+                boxShadow: "0 0 0 9999px rgba(0,0,0,0.65)",
               }}
             />
           )}
 
-          {/* Tooltip card — centred, stays in mobile column */}
-          <motion.div
-            key={`card-${step}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-32px)] max-w-[390px]"
-          >
-            <div className="glass-panel glass-panel-cyan p-5 rounded-2xl shadow-[0_0_30px_rgba(0,240,255,0.25)]">
-              <div className="flex items-start justify-between mb-2">
-                <span className="text-[10px] font-mono uppercase text-cyan-400 tracking-wider font-bold">
-                  Step {step + 1} of {STEPS.length}
-                </span>
-                <button
-                  type="button"
-                  onClick={dismiss}
-                  aria-label="Skip tour"
-                  className="tap-target -mt-1 -mr-1 w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <h3 className="font-heading text-base font-black text-white mb-1">
-                {currentStep.title}
-              </h3>
-              <p className="text-gray-300 text-xs leading-relaxed mb-4">
-                {currentStep.body}
-              </p>
-
-              <div className="flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={back}
-                  disabled={step === 0}
-                  className="tap-target px-3 py-2 rounded-lg text-xs text-gray-400 hover:text-white disabled:opacity-30 flex items-center gap-1 transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span>Back</span>
-                </button>
-
-                {/* Dot indicators */}
-                <div className="flex items-center gap-1.5">
-                  {STEPS.map((_, i) => (
-                    <span
-                      key={i}
-                      className={`rounded-full transition-all ${
-                        i === step
-                          ? "w-4 h-1.5 bg-cyan-400 shadow-[0_0_6px_#00F0FF]"
-                          : "w-1.5 h-1.5 bg-gray-600"
-                      }`}
-                    />
-                  ))}
+          {/* Compact, centered bottom dialog */}
+          <div className="fixed inset-x-0 bottom-6 z-50 flex justify-center px-4 pointer-events-none">
+            <motion.div
+              key={`card-${step}`}
+              initial={{ opacity: 0, y: 15, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.96 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="pointer-events-auto w-full max-w-[310px]"
+            >
+              <div className="glass-panel glass-panel-cyan p-3.5 rounded-2xl shadow-[0_0_25px_rgba(0,240,255,0.25)] border border-cyan-400/40 bg-[#0c0c16]/95 backdrop-blur-md">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[9px] font-mono uppercase text-cyan-400 tracking-wider font-bold">
+                    Step {step + 1} of {STEPS.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={dismiss}
+                    aria-label="Skip tour"
+                    className="tap-target -mr-1 -mt-1 w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-white"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={next}
-                  className="tap-target px-3 py-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-xs text-cyan-300 font-semibold flex items-center gap-1 transition-colors active:scale-95"
-                >
-                  <span>{isLastStep ? "Done" : "Next"}</span>
-                  {!isLastStep && <ChevronRight className="w-4 h-4" />}
-                </button>
+                {/* Title & Body */}
+                <h3 className="font-heading text-xs font-black text-white mb-0.5 tracking-tight">
+                  {currentStep.title}
+                </h3>
+                <p className="text-gray-300 text-[11px] leading-snug mb-3">
+                  {currentStep.body}
+                </p>
+
+                {/* Controls */}
+                <div className="flex items-center justify-between pt-1 border-t border-cyan-500/15">
+                  <button
+                    type="button"
+                    onClick={back}
+                    disabled={step === 0}
+                    className="px-2 py-1 rounded-md text-[10px] font-mono text-gray-400 hover:text-white disabled:opacity-20 flex items-center gap-0.5 transition-colors"
+                  >
+                    <ChevronLeft className="w-3 h-3" />
+                    <span>Back</span>
+                  </button>
+
+                  {/* Dot indicators */}
+                  <div className="flex items-center gap-1">
+                    {STEPS.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`rounded-full transition-all ${
+                          i === step
+                            ? "w-3 h-1 bg-cyan-400 shadow-[0_0_6px_#00F0FF]"
+                            : "w-1 h-1 bg-gray-600"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={next}
+                    className="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-[10px] font-mono text-cyan-300 font-bold flex items-center gap-0.5 transition-colors active:scale-95"
+                  >
+                    <span>{isLastStep ? "Done" : "Next"}</span>
+                    {!isLastStep && <ChevronRight className="w-3 h-3" />}
+                  </button>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
