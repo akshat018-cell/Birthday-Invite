@@ -112,7 +112,7 @@ export function GuidedTour() {
           setVisible(true);
           document.body.style.overflow = "hidden";
         }}
-        className="fixed bottom-6 left-4 z-30 tap-target w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all shadow-md backdrop-blur-sm"
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-30 tap-target w-10 h-10 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all shadow-md backdrop-blur-sm"
       >
         ?
       </button>
