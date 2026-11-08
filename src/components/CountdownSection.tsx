@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Timer, Bell, CalendarPlus, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Timer, Bell, CalendarPlus, Sparkles, X, Download, ExternalLink, CalendarCheck } from "lucide-react";
 import { eventConfig, formatEventDate } from "@/config/event";
 import { soundEffects } from "@/utils/audio";
+import { getGoogleCalendarUrl, downloadIcsFile } from "@/utils/calendar";
 
 interface TimeRemaining {
   days: number;
@@ -24,6 +25,8 @@ export function CountdownSection() {
   });
 
   const [mounted, setMounted] = useState(false);
+  const [showCalendarSheet, setShowCalendarSheet] = useState(false);
+  const [icsDownloaded, setIcsDownloaded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -52,18 +55,23 @@ export function CountdownSection() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleAddToCalendar = () => {
+  const handleOpenGoogle = () => {
     soundEffects.playTap();
-    // Google Calendar direct intent link
-    const title = encodeURIComponent("Angad's 14th Birthday Bash 🎉");
-    const details = encodeURIComponent(
-      "You're invited to Angad Khandelwal's 14th Birthday!"
-    );
-    const location = encodeURIComponent(eventConfig.venue.name || "To be confirmed");
-    const dates = "20261111T123000Z/20261111T173000Z"; // 18:00 - 23:00 IST in UTC
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+    const url = getGoogleCalendarUrl();
+    window.open(url, "_blank", "noopener,noreferrer");
+    setShowCalendarSheet(false);
+  };
 
-    window.open(googleCalendarUrl, "_blank", "noopener,noreferrer");
+  const handleDownloadIcs = () => {
+    soundEffects.playTap();
+    const success = downloadIcsFile();
+    if (success) {
+      setIcsDownloaded(true);
+      setTimeout(() => {
+        setIcsDownloaded(false);
+        setShowCalendarSheet(false);
+      }, 1500);
+    }
   };
 
   const timeUnits = [
@@ -132,14 +140,17 @@ export function CountdownSection() {
           </div>
         )}
 
-        {/* Action Button: Add to Calendar */}
+        {/* Single Action Button: Add to calendar */}
         <button
           type="button"
-          onClick={handleAddToCalendar}
+          onClick={() => {
+            soundEffects.playTap();
+            setShowCalendarSheet(true);
+          }}
           className="tap-target w-full py-2.5 px-4 rounded-xl bg-fuchsia-500/10 hover:bg-fuchsia-500/20 border border-fuchsia-400/30 text-fuchsia-300 text-xs font-semibold tracking-wider uppercase transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
         >
           <CalendarPlus className="w-4 h-4 text-fuchsia-400" />
-          <span>Add To Google Calendar</span>
+          <span>Add to calendar</span>
         </button>
 
         {/* Milestone Footer Tag */}
@@ -154,7 +165,102 @@ export function CountdownSection() {
           </span>
         </div>
       </div>
+
+      {/* Neon Bottom Sheet for Calendar Choice */}
+      <AnimatePresence>
+        {showCalendarSheet && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+              onClick={() => setShowCalendarSheet(false)}
+            />
+
+            {/* Bottom Sheet Modal */}
+            <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center p-4 pb-safe pointer-events-none">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 40 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="pointer-events-auto w-full max-w-[390px] glass-panel glass-panel-magenta p-5 rounded-3xl bg-[#0e0c18]/95 border border-fuchsia-400/40 shadow-[0_0_40px_rgba(255,43,214,0.3)] flex flex-col gap-3"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CalendarPlus className="w-4 h-4 text-fuchsia-400" />
+                    <h3 className="font-heading text-xs font-black uppercase text-white tracking-wider">
+                      Add to calendar
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowCalendarSheet(false)}
+                    aria-label="Close calendar options"
+                    className="tap-target -mr-2 -mt-1 w-7 h-7 rounded-lg text-gray-400 hover:text-white flex items-center justify-center"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <p className="text-[11px] text-gray-400 leading-snug">
+                  Choose your preferred calendar service:
+                </p>
+
+                <div className="flex flex-col gap-2 pt-1">
+                  {/* Google Calendar Option */}
+                  <button
+                    type="button"
+                    onClick={handleOpenGoogle}
+                    className="tap-target w-full py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-fuchsia-400/25 text-left flex items-center justify-between group active:scale-[0.98] transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-fuchsia-500/10 border border-fuchsia-400/30 flex items-center justify-center text-fuchsia-300">
+                        <ExternalLink className="w-4 h-4 text-fuchsia-400" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs font-heading font-bold text-white group-hover:text-fuchsia-300 transition-colors">
+                          Google Calendar
+                        </span>
+                        <span className="text-[10px] text-gray-400 font-mono">
+                          Open in browser / Google Calendar app
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Apple / Outlook (.ics) Option */}
+                  <button
+                    type="button"
+                    onClick={handleDownloadIcs}
+                    className="tap-target w-full py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-fuchsia-400/25 text-left flex items-center justify-between group active:scale-[0.98] transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-fuchsia-500/10 border border-fuchsia-400/30 flex items-center justify-center text-fuchsia-300">
+                        {icsDownloaded ? (
+                          <CalendarCheck className="w-4 h-4 text-lime-400" />
+                        ) : (
+                          <Download className="w-4 h-4 text-fuchsia-400" />
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs font-heading font-bold text-white group-hover:text-fuchsia-300 transition-colors">
+                          Apple / Outlook (.ics)
+                        </span>
+                        <span className="text-[10px] text-gray-400 font-mono">
+                          {icsDownloaded ? "File downloaded!" : "Universal .ics file for iOS Safari & Android"}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
-
