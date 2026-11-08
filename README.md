@@ -29,11 +29,16 @@ Base: `#07070D` · animated radial mesh gradient · SVG grain overlay
 
 ---
 
+## 🌐 Live Deployment
+- **Production URL:** [https://angad-birthday.vercel.app/](https://angad-birthday.vercel.app/)
+
+---
+
 ## 🛠️ Local Development
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
+npm run dev        # local test server
 npm run build      # production build
 npm run lint       # ESLint check
 ```
