@@ -47,3 +47,4 @@ export function FallbackFace({ index }: { index: number }) {
     </div>
   );
 }
+
