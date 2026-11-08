@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Neon Palette */
+  --neon-cyan: #00f0ff;
+  --neon-magenta: #ff2bd6;
+  --neon-lime: #b6ff00;
+  --neon-orange: #ff8a00;
+  --neon-violet: #a855ff;
+  --neon-green: #39ff14;
+  --neon-yellow: #ffe600;
+  --neon-pink: #ff2bd6;
+
+  /* Base & Surface System */
+  --bg-base: #07070d;
+  --surface-card: rgba(14, 14, 24, 0.75);
+  --surface-elevated: rgba(22, 22, 36, 0.88);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Safe Area Insets Fallback */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Base Body Setup */
+html {
+  background-color: var(--bg-base);
+  color: #f3f4f6;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-base);
+  color: #f3f4f6;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle background gradient mesh */
+.bg-gradient-mesh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(255, 43, 214, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 50% 70%, rgba(182, 255, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(168, 85, 255, 0.06) 0%, transparent 40%),
+    #07070d;
+}
+
+/* Faint digital grain texture */
+.bg-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Glassmorphism Card Core */
+.glass-panel {
+  background: var(--surface-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+/* High-contrast neon border accents */
+.glass-panel-cyan {
+  border-color: rgba(0, 240, 255, 0.22);
+}
+.glass-panel-cyan:hover,
+.glass-panel-cyan:focus-within {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 0 20px -3px rgba(0, 240, 255, 0.25);
+}
+
+.glass-panel-magenta {
+  border-color: rgba(255, 43, 214, 0.22);
+}
+.glass-panel-magenta:hover,
+.glass-panel-magenta:focus-within {
+  border-color: rgba(255, 43, 214, 0.45);
+  box-shadow: 0 0 20px -3px rgba(255, 43, 214, 0.25);
+}
+
+.glass-panel-lime {
+  border-color: rgba(182, 255, 0, 0.22);
+}
+.glass-panel-lime:hover,
+.glass-panel-lime:focus-within {
+  border-color: rgba(182, 255, 0, 0.45);
+  box-shadow: 0 0 20px -3px rgba(182, 255, 0, 0.25);
+}
+
+.glass-panel-orange {
+  border-color: rgba(255, 138, 0, 0.22);
+}
+.glass-panel-orange:hover,
+.glass-panel-orange:focus-within {
+  border-color: rgba(255, 138, 0, 0.45);
+  box-shadow: 0 0 20px -3px rgba(255, 138, 0, 0.25);
+}
+
+.glass-panel-violet {
+  border-color: rgba(168, 85, 255, 0.22);
+}
+.glass-panel-violet:hover,
+.glass-panel-violet:focus-within {
+  border-color: rgba(168, 85, 255, 0.45);
+  box-shadow: 0 0 20px -3px rgba(168, 85, 255, 0.25);
+}
+
+.glass-panel-green {
+  border-color: rgba(57, 255, 20, 0.22);
+}
+.glass-panel-green:hover,
+.glass-panel-green:focus-within {
+  border-color: rgba(57, 255, 20, 0.45);
+  box-shadow: 0 0 20px -3px rgba(57, 255, 20, 0.25);
+}
+
+.glass-panel-yellow {
+  border-color: rgba(255, 230, 0, 0.22);
+}
+.glass-panel-yellow:hover,
+.glass-panel-yellow:focus-within {
+  border-color: rgba(255, 230, 0, 0.45);
+  box-shadow: 0 0 20px -3px rgba(255, 230, 0, 0.25);
+}
+
+/* GPU-friendly neon text glows */
+.neon-text-cyan {
+  color: #00f0ff;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5), 0 0 16px rgba(0, 240, 255, 0.2);
+}
+.neon-text-magenta {
+  color: #ff2bd6;
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.5), 0 0 16px rgba(255, 43, 214, 0.2);
+}
+.neon-text-lime {
+  color: #b6ff00;
+  text-shadow: 0 0 8px rgba(182, 255, 0, 0.5), 0 0 16px rgba(182, 255, 0, 0.2);
+}
+.neon-text-orange {
+  color: #ff8a00;
+  text-shadow: 0 0 8px rgba(255, 138, 0, 0.5), 0 0 16px rgba(255, 138, 0, 0.2);
+}
+.neon-text-violet {
+  color: #a855ff;
+  text-shadow: 0 0 8px rgba(168, 85, 255, 0.5), 0 0 16px rgba(168, 85, 255, 0.2);
+}
+.neon-text-green {
+  color: #39ff14;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5), 0 0 16px rgba(57, 255, 20, 0.2);
+}
+.neon-text-yellow {
+  color: #ffe600;
+  text-shadow: 0 0 8px rgba(255, 230, 0, 0.5), 0 0 16px rgba(255, 230, 0, 0.2);
+}
+
+/* Tap Target & Touch Controls */
+.tap-target {
+  min-height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Safe Area Insets Helpers */
+.pt-safe {
+  padding-top: max(16px, env(safe-area-inset-top));
+}
+.pb-safe {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.px-safe {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
