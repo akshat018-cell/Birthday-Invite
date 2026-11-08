@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CalendarDays, Clock, Sparkles, ChevronDown } from "lucide-react";
+import { CalendarDays, Clock, ChevronDown } from "lucide-react";
 import { eventConfig, ScheduleItem } from "@/config/event";
 import { soundEffects } from "@/utils/audio";
 
 export function ScheduleSection() {
-  const [activeItem, setActiveItem] = useState<string | null>(eventConfig.schedule[0]?.id ?? null);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
 
-  const toggleItem = (id: string) => {
+  const toggleItem = (id: string, hasDescription: boolean) => {
+    if (!hasDescription) return;
     soundEffects.playTap();
     setActiveItem((prev) => (prev === id ? null : id));
   };
@@ -31,7 +32,7 @@ export function ScheduleSection() {
             <span>Night Protocol</span>
           </div>
           <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-300 border border-orange-500/20">
-            5 Stages
+            {eventConfig.schedule.length} Stages
           </span>
         </div>
 
@@ -39,12 +40,13 @@ export function ScheduleSection() {
           Party <span className="neon-text-orange">Timeline</span>
         </h2>
         <p className="text-gray-400 text-xs mb-6">
-          Non-stop hype from entry to the final drop. Tap any phase to inspect details.
+          The night&apos;s agenda. Times to be confirmed.
         </p>
 
         {/* Timeline Items */}
         <div className="relative flex flex-col gap-3 pl-4 border-l-2 border-orange-500/30 ml-2">
           {eventConfig.schedule.map((item: ScheduleItem, index: number) => {
+            const hasDescription = Boolean(item.description);
             const isExpanded = activeItem === item.id;
 
             return (
@@ -59,8 +61,10 @@ export function ScheduleSection() {
                 />
 
                 <div
-                  onClick={() => toggleItem(item.id)}
-                  className={`p-3.5 rounded-xl transition-all cursor-pointer select-none ${
+                  onClick={() => toggleItem(item.id, hasDescription)}
+                  className={`p-3.5 rounded-xl transition-all ${
+                    hasDescription ? "cursor-pointer select-none" : "cursor-default"
+                  } ${
                     isExpanded
                       ? "bg-black/60 border border-orange-500/40 shadow-[0_0_15px_rgba(255,138,0,0.15)]"
                       : "bg-black/30 border border-white/5 hover:border-orange-500/20"
@@ -73,18 +77,22 @@ export function ScheduleSection() {
                       </span>
                       <div className="flex flex-col">
                         <span className="text-[10px] font-mono uppercase text-orange-400/90 font-semibold tracking-wider">
-                          Phase 0{index + 1} • {item.time ?? "Scheduled"}
+                          Phase 0{index + 1}
+                          {item.time ? ` • ${item.time}` : " • Time TBC"}
                         </span>
                         <h3 className="text-white text-xs font-heading font-bold mt-0.5">
                           {item.title}
                         </h3>
                       </div>
                     </div>
-                    <ChevronDown
-                      className={`w-4 h-4 text-orange-400 transition-transform duration-200 shrink-0 ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
-                    />
+                    {/* Only show chevron if there is a description to expand */}
+                    {hasDescription && (
+                      <ChevronDown
+                        className={`w-4 h-4 text-orange-400 transition-transform duration-200 shrink-0 ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
+                      />
+                    )}
                   </div>
 
                   <AnimatePresence>
@@ -108,19 +116,12 @@ export function ScheduleSection() {
           })}
         </div>
 
-        {/* Footer */}
-        <div className="mt-5 pt-3 border-t border-orange-500/15 flex items-center justify-between text-[11px] text-orange-300/70 font-mono">
-          <span className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-orange-400" />
-            Stay till the finale
-          </span>
-          <span className="flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-orange-400" />
-            No Curfew
-          </span>
+        {/* Footer — only factual info */}
+        <div className="mt-5 pt-3 border-t border-orange-500/15 flex items-center gap-1.5 text-[11px] text-orange-300/70 font-mono">
+          <Clock className="w-3.5 h-3.5 text-orange-400" />
+          <span>All times to be confirmed</span>
         </div>
       </div>
     </section>
   );
 }
-

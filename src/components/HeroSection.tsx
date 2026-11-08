@@ -60,7 +60,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
           </span>
         </h1>
         <p className="text-gray-300 text-sm mt-3 max-w-[320px] leading-relaxed">
-          The milestone night is here. Pure energy, sick music, arcade battles, and an epic glow party.
+          An exclusive celebration for the big 14. Games, food, music, and memories.
         </p>
       </motion.div>
 
@@ -113,7 +113,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
                 Location
               </span>
               <span className="text-white text-xs font-semibold truncate">
-                {eventConfig.venue.name ?? "Top Secret"}
+                {eventConfig.venue.name ?? "To be announced"}
               </span>
             </div>
           </div>

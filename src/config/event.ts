@@ -15,7 +15,13 @@ export interface ScheduleItem {
   time: string | null;
   title: string;
   emoji: string;
-  description?: string;
+  /** Optional description shown in the accordion. Hidden when null/undefined. */
+  description?: string | null;
+}
+
+export interface RsvpStatus {
+  value: string;
+  label: string;
 }
 
 export interface EventConfig {
@@ -29,15 +35,21 @@ export interface EventConfig {
   startTime: string | null;
   /** Venue details */
   venue: VenueConfig;
+  /** Optional dress code, e.g. "Neon / Cyber / Black". Hidden when null. */
+  dressCode: string | null;
   /** WhatsApp phone number for RSVP, international format digits only (e.g. "919876543210") */
   whatsappNumber: string | null;
+  /** Intro text shown above the RSVP form */
+  rsvpIntro: string;
   /** Template for WhatsApp RSVP message. Tokens: {name}, {guests}, {status}, {note} */
   rsvpMessageTemplate: string;
   /** Template for contacting the host. Tokens: {name}, {note} */
   contactMessageTemplate: string;
+  /** RSVP status options shown to the guest */
+  rsvpStatuses: RsvpStatus[];
   /** Event schedule timeline */
   schedule: ScheduleItem[];
-  /** Easter egg message unlocked after winning the minigame */
+  /** Easter egg message unlocked after winning the memory game */
   secretMessage: string;
   /** Music audio track metadata */
   audio: {
@@ -47,10 +59,10 @@ export interface EventConfig {
   /** Gallery photos configuration */
   photos: {
     src: string;
-    caption: string;
+    caption: string | null;
     alt: string;
   }[];
-  /** Face reactions / stickers for interactive game & celebration */
+  /** Face images used in the memory match game (4 required; fallback SVGs shown when missing) */
   faces: {
     src: string;
     label: string;
@@ -75,15 +87,20 @@ export const eventConfig: EventConfig = {
 
   // TODO: Finalize venue location details
   venue: {
-    name: null,      // e.g. "Skyline Arena Club"
-    address: null,   // e.g. "Level 4, High Street Mall, MG Road, Bengaluru"
-    mapQuery: null,  // e.g. "Skyline Arena Club Bengaluru"
+    name: null,      // e.g. "The Grand Arena"
+    address: null,   // e.g. "123 Main Street, City"
+    mapQuery: null,  // e.g. "The Grand Arena City"
     mapLink: null,   // e.g. "https://maps.google.com/?q=..."
   },
+
+  // TODO: Add dress code once decided, e.g. "Neon / Cyber / Black". Set null to hide the card.
+  dressCode: null,
 
   // TODO: Enter host WhatsApp number in international format, digits only (no '+' or spaces)
   // e.g. "919876543210"
   whatsappNumber: null,
+
+  rsvpIntro: "Confirm your spot on WhatsApp, it takes 10 seconds.",
 
   rsvpMessageTemplate:
     "Hey Angad! RSVP for {name}: {status}! 🚀 Party of {guests}. {note}",
@@ -91,48 +108,54 @@ export const eventConfig: EventConfig = {
   contactMessageTemplate:
     "Hey Angad! Message from {name}: {note}",
 
-  // Schedule timeline with placeholder items
+  rsvpStatuses: [
+    { value: "attending",  label: "I'm in! 🎉" },
+    { value: "maybe",      label: "Maybe 🤔" },
+    { value: "declined",   label: "Can't make it 😢" },
+  ],
+
+  // Schedule timeline — only the five agreed items. Descriptions are optional.
   schedule: [
     {
       id: "arrival",
       time: null, // TODO: Set time e.g. "5:30 PM"
-      title: "Arrival & Red Carpet Entry",
+      title: "Arrival",
       emoji: "🔥",
-      description: "Neon wristbands, hype music, and welcome mocktails.",
-    },
-    {
-      id: "games",
-      time: null, // TODO: Set time e.g. "6:15 PM"
-      title: "Arcade Battles & Laser Tag",
-      emoji: "🎮",
-      description: "Squad tournaments, high score showdowns, and prizes.",
+      description: null, // TODO: Add description when decided
     },
     {
       id: "cake",
-      time: null, // TODO: Set time e.g. "7:30 PM"
-      title: "Cake Cutting Ceremony",
+      time: null, // TODO: Set time e.g. "7:00 PM"
+      title: "Cake Cutting",
       emoji: "🎂",
-      description: "The big 14 milestone moment with sparklers and confetti.",
+      description: null, // TODO: Add description when decided
     },
     {
       id: "food",
-      time: null, // TODO: Set time e.g. "8:00 PM"
-      title: "Gourmet Feast & Bites",
+      time: null, // TODO: Set time e.g. "7:30 PM"
+      title: "Food",
       emoji: "🍕",
-      description: "Pizza bar, sliders, loaded fries, and dessert station.",
+      description: null, // TODO: Add description when decided
+    },
+    {
+      id: "games",
+      time: null, // TODO: Set time e.g. "8:15 PM"
+      title: "Games",
+      emoji: "🎮",
+      description: null, // TODO: Add description when decided
     },
     {
       id: "dance",
-      time: null, // TODO: Set time e.g. "8:45 PM"
-      title: "DJ & Glow Dance Floor",
+      time: null, // TODO: Set time e.g. "9:00 PM"
+      title: "Dance Floor",
       emoji: "🪩",
-      description: "Bass-boosted anthems, neon glow sticks, and dance circle.",
+      description: null, // TODO: Add description when decided
     },
   ],
 
-  // Fun secret easter-egg unlocked upon winning the mini-game
+  // Fun secret easter-egg unlocked upon winning the memory game
   secretMessage:
-    "🏆 CODE CRACKED: You're an absolute legend! Angad has reserved a VIP neon swag bag and DJ booth shoutout for you. See you on the floor! ⚡",
+    "🏆 You cracked it! Angad has a special surprise waiting for you at the party. See you there! ⚡",
 
   // Background party music
   audio: {
@@ -140,31 +163,31 @@ export const eventConfig: EventConfig = {
     title: "Angad's 14th Hype Track",
   },
 
-  // Photo gallery placeholders
+  // Photo gallery (caption is optional — set null to hide)
   photos: [
     {
       src: "/photos/photo-1.jpg",
-      caption: "Leveling up to 14",
-      alt: "Angad celebrating 14th birthday",
+      caption: null, // TODO: Add caption e.g. "Level 14 unlocked"
+      alt: "Angad at his birthday",
     },
     {
       src: "/photos/photo-2.jpg",
-      caption: "Hype squad energy",
-      alt: "Party memories and good times",
+      caption: null, // TODO: Add caption
+      alt: "Angad birthday photo",
     },
     {
       src: "/photos/photo-3.jpg",
-      caption: "Unstoppable vibes",
-      alt: "Looking forward to 11 Nov 2026",
+      caption: null, // TODO: Add caption
+      alt: "Angad birthday photo",
     },
   ],
 
-  // Interactive face / sticker assets
+  // Face images used in the memory match game
   faces: [
-    { src: "/faces/face-1.png", label: "Hyped" },
-    { src: "/faces/face-2.png", label: "Party Mode" },
-    { src: "/faces/face-3.png", label: "Legend" },
-    { src: "/faces/face-4.png", label: "VIP" },
+    { src: "/faces/face-1.png", label: "Face 1" },
+    { src: "/faces/face-2.png", label: "Face 2" },
+    { src: "/faces/face-3.png", label: "Face 3" },
+    { src: "/faces/face-4.png", label: "Face 4" },
   ],
 };
 
@@ -185,4 +208,3 @@ export function formatEventDate(dateStr: string = eventConfig.date): string {
     return dateStr;
   }
 }
-

@@ -57,9 +57,9 @@ export function CountdownSection() {
     // Google Calendar direct intent link
     const title = encodeURIComponent("Angad's 14th Birthday Bash 🎉");
     const details = encodeURIComponent(
-      "Official VIP Celebration for Angad Khandelwal's 14th Birthday!\nDress Code: Neon / Cyber Hype\nRSVP: https://angad14.party"
+      "You're invited to Angad Khandelwal's 14th Birthday!"
     );
-    const location = encodeURIComponent(eventConfig.venue.name || "Bengaluru, India");
+    const location = encodeURIComponent(eventConfig.venue.name || "To be confirmed");
     const dates = "20261111T123000Z/20261111T173000Z"; // 18:00 - 23:00 IST in UTC
     const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
 

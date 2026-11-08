@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import {
   MapPin,
   Clock,
   Shirt,
   Compass,
-  Lock,
+  MapPinOff,
   Download,
   Check,
   Sparkles,
+  CalendarCheck,
 } from "lucide-react";
 import { eventConfig, formatEventDate } from "@/config/event";
 import { soundEffects } from "@/utils/audio";
@@ -20,6 +20,27 @@ export function DetailsSection() {
 
   const downloadIcsFile = () => {
     soundEffects.playTap();
+
+    // Build the DTSTART/DTEND correctly:
+    // If startTime is null → use an all-day event (DATE value type, no time zone)
+    // If startTime is set → use a UTC timed event
+    let dtStart: string;
+    let dtEnd: string;
+
+    if (eventConfig.startTime) {
+      // We have a start time — encode as UTC (IST = UTC+5:30)
+      dtStart = "DTSTART:20261111T123000Z"; // placeholder; replace with real time
+      dtEnd = "DTEND:20261111T173000Z";
+    } else {
+      // All-day event — DATE format (no TZID, no time), works on iOS Safari & Android
+      dtStart = "DTSTART;VALUE=DATE:20261111";
+      dtEnd = "DTEND;VALUE=DATE:20261112";
+    }
+
+    const locationLine = eventConfig.venue.name
+      ? `LOCATION:${eventConfig.venue.name}${eventConfig.venue.address ? `, ${eventConfig.venue.address}` : ""}`
+      : "LOCATION:To be confirmed";
+
     const icsContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -28,11 +49,12 @@ export function DetailsSection() {
       "METHOD:PUBLISH",
       "BEGIN:VEVENT",
       "SUMMARY:Angad's 14th Birthday Bash 🎉",
-      "DESCRIPTION:VIP Celebration for Angad Khandelwal's 14th Milestone Birthday! High-energy neon party.",
-      `LOCATION:${eventConfig.venue.name || "Bengaluru, India"}`,
-      "DTSTART:20261111T123000Z", // 18:00 IST
-      "DTEND:20261111T173000Z",   // 23:00 IST
+      "DESCRIPTION:You're invited to Angad Khandelwal's 14th Birthday!",
+      locationLine,
+      dtStart,
+      dtEnd,
       "STATUS:CONFIRMED",
+      `UID:angad14bday-${Date.now()}@birthday-invite`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
@@ -64,14 +86,14 @@ export function DetailsSection() {
         {/* Header */}
         <div className="inline-flex items-center gap-2 text-lime-400 text-xs font-semibold uppercase tracking-wider mb-3">
           <MapPin className="w-4 h-4 text-lime-400" />
-          <span>Mission Briefing & Intel</span>
+          <span>Event Details</span>
         </div>
 
         <h2 className="font-heading text-xl font-black uppercase tracking-tight text-white mb-1">
           Party <span className="neon-text-lime">Coordinates</span>
         </h2>
         <p className="text-gray-400 text-xs mb-5">
-          Everything you need to know before stepping into the arena.
+          Everything you need before the big day.
         </p>
 
         {/* Date & Time Grid */}
@@ -84,7 +106,7 @@ export function DetailsSection() {
               </span>
             </div>
             <span className="text-white text-xs font-bold">
-              {eventConfig.startTime ?? "Evening (TBA)"}
+              {eventConfig.startTime ?? "Time coming soon"}
             </span>
             <span className="text-[10px] text-gray-400 mt-0.5">
               {eventConfig.timezone}
@@ -98,12 +120,14 @@ export function DetailsSection() {
                 Date
               </span>
             </div>
-            <span className="text-white text-xs font-bold">11 Nov 2026</span>
-            <span className="text-[10px] text-gray-400 mt-0.5">Wednesday</span>
+            <span className="text-white text-xs font-bold">
+              {formatEventDate(eventConfig.date).split(",")[0].trim()}{" "}
+              {formatEventDate(eventConfig.date).split(",").slice(1).join(",").trim()}
+            </span>
           </div>
         </div>
 
-        {/* Venue Card (Handles null gracefully) */}
+        {/* Venue Card */}
         <div className="p-4 rounded-xl bg-black/50 border border-lime-500/30 mb-3 relative overflow-hidden">
           {eventConfig.venue.name ? (
             <div className="flex flex-col gap-2">
@@ -112,7 +136,7 @@ export function DetailsSection() {
                   Confirmed Venue
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-lime-500/15 text-lime-300 text-[10px] font-mono border border-lime-500/30">
-                  Ready
+                  Confirmed
                 </span>
               </div>
               <h3 className="text-white font-heading text-sm font-bold">
@@ -131,64 +155,46 @@ export function DetailsSection() {
                   className="mt-2 inline-flex items-center gap-1.5 text-xs text-lime-300 hover:text-lime-200 underline underline-offset-4"
                 >
                   <Compass className="w-3.5 h-3.5 text-lime-400" />
-                  <span>Open Directions in Maps</span>
+                  <span>Open in Maps</span>
                 </a>
               )}
             </div>
           ) : (
+            /* Generic "coming soon" — no place names or claims */
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-lime-500/10 border border-lime-400/30 flex items-center justify-center text-lime-400 shrink-0">
-                <Lock className="w-4 h-4 text-lime-400" />
+              <div className="w-9 h-9 rounded-xl bg-lime-500/10 border border-lime-400/30 flex items-center justify-center shrink-0">
+                <MapPinOff className="w-4 h-4 text-lime-400" />
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-lime-400 font-bold">
-                    Classified Location
-                  </span>
-                  <span className="px-2 py-0.2 rounded bg-lime-500/15 text-lime-300 text-[9px] font-mono">
-                    Dropping Soon
-                  </span>
-                </div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-lime-400 font-bold">
+                  Venue
+                </span>
                 <h3 className="text-white font-heading text-xs font-bold mt-0.5">
-                  Top-Secret Arena in Bengaluru
+                  Venue reveal, coming soon
                 </h3>
-                <p className="text-gray-400 text-[11px] mt-1 leading-normal">
-                  Coordinates will be texted directly to confirmed VIP guests before the big day.
-                </p>
               </div>
             </div>
           )}
         </div>
 
-        {/* Dress Code & Style Guide */}
-        <div className="p-3.5 rounded-xl bg-black/40 border border-lime-500/20 mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-1.5 text-lime-400">
-              <Shirt className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-mono uppercase tracking-wider font-semibold">
-                Dress Code
+        {/* Dress Code — only shown when dressCode is set */}
+        {eventConfig.dressCode && (
+          <div className="p-3.5 rounded-xl bg-black/40 border border-lime-500/20 mb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-lime-400">
+                <Shirt className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-mono uppercase tracking-wider font-semibold">
+                  Dress Code
+                </span>
+              </div>
+              <span className="text-[10px] text-gray-300 font-mono">
+                {eventConfig.dressCode}
               </span>
             </div>
-            <span className="text-[10px] text-gray-400 font-mono">
-              Neon / Cyber / Black
-            </span>
           </div>
+        )}
 
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-[#00F0FF] shadow-[0_0_6px_#00F0FF]" title="Cyan" />
-              <span className="w-3.5 h-3.5 rounded-full bg-[#FF2BD6] shadow-[0_0_6px_#FF2BD6]" title="Magenta" />
-              <span className="w-3.5 h-3.5 rounded-full bg-[#B6FF00] shadow-[0_0_6px_#B6FF00]" title="Lime" />
-              <span className="w-3.5 h-3.5 rounded-full bg-[#FF8A00] shadow-[0_0_6px_#FF8A00]" title="Orange" />
-              <span className="w-3.5 h-3.5 rounded-full bg-[#07070D] border border-white/40" title="Pitch Black" />
-            </div>
-            <span className="text-xs text-gray-300 font-medium ml-1">
-              Glow Drip &amp; Cyber Hype
-            </span>
-          </div>
-        </div>
-
-        {/* ICS Calendar Download */}
+        {/* iCal Download — works on iOS Safari & Android Chrome */}
         <button
           type="button"
           onClick={downloadIcsFile}
@@ -197,12 +203,12 @@ export function DetailsSection() {
           {downloadedIcs ? (
             <>
               <Check className="w-4 h-4 text-lime-400" />
-              <span>Calendar File Saved (.ics)</span>
+              <span>Saved to Calendar!</span>
             </>
           ) : (
             <>
-              <Download className="w-4 h-4 text-lime-400" />
-              <span>Download iCal / Outlook File</span>
+              <CalendarCheck className="w-4 h-4 text-lime-400" />
+              <span>Add to Calendar (.ics)</span>
             </>
           )}
         </button>
@@ -210,4 +216,3 @@ export function DetailsSection() {
     </section>
   );
 }
-

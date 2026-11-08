@@ -1,95 +1,91 @@
 # ⚡ Angad's 14th Birthday Bash — VIP Invitation Web App
 
-A production-grade, mobile-only digital birthday invitation built for **Angad Khandelwal's 14th Birthday** on **11 November 2026** (Timezone: `Asia/Kolkata`).
-
-Crafted with a hype cyberpunk dark theme, section-specific neon glows, fluid glassmorphism, responsive micro-interactions, and a desktop QR redirection screen.
+A production-grade, mobile-only digital birthday invitation for **Angad Khandelwal's 14th Birthday** on **11 November 2026** (Asia/Kolkata).
 
 ---
 
 ## 🚀 Tech Stack
 
-- **Framework:** Next.js (App Router, Static Export Friendly)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS + Custom Neon Design System
-- **Typography:** `next/font` with `Unbounded` (Headings) and `Outfit` (Body)
-- **Icons:** Lucide Icons (`lucide-react`)
-- **Animations:** Framer Motion
-- **Desktop Detection & QR:** `qrcode.react`
+- **Next.js 14** (App Router, static-export friendly)
+- **TypeScript** · **Tailwind CSS** · **Framer Motion**
+- **next/font**: `Unbounded` (headings) · `Outfit` (body)
+- **Lucide** icons · `qrcode.react` for desktop QR code
 
 ---
 
-## 🎨 Design System & Colors
+## 🎨 Design System
 
-Base background: `#07070D` with animated ambient gradient mesh and subtle digital grain.
+Base: `#07070D` · animated radial mesh gradient · SVG grain overlay
 
-| Section | Neon Accent | Hex Code |
+| Section | Neon Accent | Hex |
 | :--- | :--- | :--- |
-| **Hero** | Cyber Cyan | `#00F0FF` |
-| **Countdown** | Electric Magenta | `#FF2BD6` |
-| **Details & Venue** | Acid Lime | `#B6FF00` |
-| **Schedule** | Hyper Orange | `#FF8A00` |
-| **Photo Gallery** | Ultraviolet | `#A855FF` |
-| **RSVP Form** | Laser Green | `#39FF14` |
-| **Arcade Mini-Game** | Cyber Yellow & Pink | `#FFE600` / `#FF2BD6` |
-
-- **GPU-Friendly Glows:** Multi-layered box-shadow and text-shadow with constrained blur radii.
-- **Mobile First & Safe Insets:** Built for 360px–430px screens utilizing `100dvh` and `env(safe-area-inset-*)`.
-- **Desktop Interceptor:** Viewports $\ge$ 768px display an interactive QR code screen redirecting guests to their mobile device.
+| Hero | Cyber Cyan | `#00F0FF` |
+| Countdown | Electric Magenta | `#FF2BD6` |
+| Details & Venue | Acid Lime | `#B6FF00` |
+| Schedule | Hyper Orange | `#FF8A00` |
+| Photo Gallery | Ultraviolet | `#A855FF` |
+| RSVP Form | Laser Green | `#39FF14` |
+| Memory Match Game | Cyber Yellow + Pink | `#FFE600` / `#FF2BD6` |
 
 ---
 
-## 🛠️ Getting Started
+## 🛠️ Local Development
 
-### 1. Prerequisites
-- Node.js 18+ (tested on Node v20/v24)
-- npm or pnpm
-
-### 2. Development Server
 ```bash
-npm run dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm run lint       # ESLint check
 ```
-Open [http://localhost:3000](http://localhost:3000) on your mobile browser or use Chrome DevTools Mobile Emulation (iPhone 14 / Pixel 7).
 
-### 3. Production Build
-```bash
-npm run build
-```
-Generates an optimized production build. Compatible with Vercel and static hosting.
-
-### 4. Code Linting
-```bash
-npm run lint
-```
+Open in Chrome → DevTools → Toggle Device Mode → iPhone 14 (390px) or any ≥ 360px mobile viewport.
 
 ---
 
 ## 📋 BEFORE LAUNCH CHECKLIST
 
-All core event data is centralized in [`src/config/event.ts`](file:///c:/DreamSpace/Birthday%20Invite/src/config/event.ts). Update the placeholders marked with `TODO` before distributing the link to guests.
+> All event data is in one place: [`src/config/event.ts`](src/config/event.ts).
+> Replace every `null` value before distributing the link to guests.
 
 | Item | File to edit | What to change |
 | :--- | :--- | :--- |
-| **Party Start Time** | `src/config/event.ts` | Change `startTime: null` to the finalized event time (e.g., `"5:30 PM"` or `"18:00"`). |
-| **Venue Name** | `src/config/event.ts` | Replace `venue.name: null` with the venue title (e.g., `"Skyline Arena Club"`). |
-| **Venue Address** | `src/config/event.ts` | Replace `venue.address: null` with full street address. |
-| **Map Query / Link** | `src/config/event.ts` | Update `venue.mapQuery` and `venue.mapLink` with Google Maps destination URL. |
-| **WhatsApp Number** | `src/config/event.ts` | Set `whatsappNumber: null` to the host's phone number in international format with digits only (e.g., `"919876543210"`). |
-| **RSVP Message Template** | `src/config/event.ts` | Customize `rsvpMessageTemplate` string containing tokens `{name}`, `{guests}`, `{status}`, `{note}`. |
-| **Contact Message Template** | `src/config/event.ts` | Customize `contactMessageTemplate` string containing tokens `{name}`, `{note}`. |
-| **Schedule Times** | `src/config/event.ts` | Set the `time` property for each item in `schedule` (Arrival, Games, Cake Cutting, Food, Dance Floor). |
-| **Secret Minigame Message** | `src/config/event.ts` | Personalize `secretMessage` revealed after winning the arcade game. |
-| **Photo 1** | `public/photos/photo-1.jpg` | Replace placeholder with a high-res photo of Angad (400x500 or higher). |
-| **Photo 2** | `public/photos/photo-2.jpg` | Replace placeholder with memory / squad photo. |
-| **Photo 3** | `public/photos/photo-3.jpg` | Replace placeholder with party vibe / hype photo. |
-| **Face Image 1** | `public/faces/face-1.png` | Replace with sticker/reaction face PNG (128x128 transparent). |
-| **Face Image 2** | `public/faces/face-2.png` | Replace with sticker/reaction face PNG (128x128 transparent). |
-| **Face Image 3** | `public/faces/face-3.png` | Replace with sticker/reaction face PNG (128x128 transparent). |
-| **Face Image 4** | `public/faces/face-4.png` | Replace with sticker/reaction face PNG (128x128 transparent). |
-| **Party Music File** | `public/audio/party.mp3` | Replace with 30-60s looping hype soundtrack/beat (MP3 format). |
-| **Social Share (OG) Image** | `public/og.png` | Replace with custom 1200x630 Open Graph preview image for WhatsApp / iMessage / socials. |
+| **Party start time** | `src/config/event.ts` | `startTime: null` → e.g. `"5:30 PM"`. Used in Details card, iCal file (timed vs all-day), and Hero chip. |
+| **Venue name** | `src/config/event.ts` | `venue.name: null` → e.g. `"The Grand Arena"`. Shown in Details card, Hero chip, iCal location. |
+| **Venue address** | `src/config/event.ts` | `venue.address: null` → full street address string. Shown below venue name when set. |
+| **Map query** | `src/config/event.ts` | `venue.mapQuery: null` → Google Maps search query (optional). |
+| **Map link** | `src/config/event.ts` | `venue.mapLink: null` → direct Google Maps / Apple Maps URL. Shows "Open in Maps" link when set. |
+| **WhatsApp number** | `src/config/event.ts` | `whatsappNumber: null` → international digits only, no `+` or spaces, e.g. `"919876543210"`. Enables RSVP form & floating contact button. |
+| **RSVP intro text** | `src/config/event.ts` | `rsvpIntro` → one-liner shown above the RSVP form. Default: `"Confirm your spot on WhatsApp, it takes 10 seconds."` |
+| **RSVP message template** | `src/config/event.ts` | `rsvpMessageTemplate` → WhatsApp pre-fill. Tokens: `{name}` `{status}` `{guests}` `{note}`. |
+| **Contact message template** | `src/config/event.ts` | `contactMessageTemplate` → used by the floating WhatsApp button. Tokens: `{name}` `{note}`. |
+| **RSVP status labels** | `src/config/event.ts` | `rsvpStatuses` → array of `{ value, label }`. Default: "I'm in! 🎉", "Maybe 🤔", "Can't make it 😢". |
+| **Schedule: Arrival time** | `src/config/event.ts` | `schedule[0].time: null` → e.g. `"5:30 PM"`. |
+| **Schedule: Arrival description** | `src/config/event.ts` | `schedule[0].description: null` → optional detail shown in accordion. Leave null to hide. |
+| **Schedule: Cake Cutting time** | `src/config/event.ts` | `schedule[1].time` → set when confirmed. |
+| **Schedule: Cake Cutting description** | `src/config/event.ts` | `schedule[1].description` → optional. |
+| **Schedule: Food time** | `src/config/event.ts` | `schedule[2].time` → set when confirmed. |
+| **Schedule: Food description** | `src/config/event.ts` | `schedule[2].description` → optional. |
+| **Schedule: Games time** | `src/config/event.ts` | `schedule[3].time` → set when confirmed. |
+| **Schedule: Games description** | `src/config/event.ts` | `schedule[3].description` → optional. |
+| **Schedule: Dance Floor time** | `src/config/event.ts` | `schedule[4].time` → set when confirmed. |
+| **Schedule: Dance Floor description** | `src/config/event.ts` | `schedule[4].description` → optional. |
+| **Dress code** | `src/config/event.ts` | `dressCode: null` → e.g. `"Neon / Cyber / Black"`. Leave null to hide the card entirely. |
+| **Secret game message** | `src/config/event.ts` | `secretMessage` → shown after winning the memory match. |
+| **Photo 1 image** | `public/photos/photo-1.jpg` | Replace placeholder with a real photo (any aspect ratio; displayed 4:5). |
+| **Photo 1 caption** | `src/config/event.ts` | `photos[0].caption: null` → e.g. `"Level 14 unlocked"`. Leave null to show no caption. |
+| **Photo 2 image** | `public/photos/photo-2.jpg` | Replace placeholder. |
+| **Photo 2 caption** | `src/config/event.ts` | `photos[1].caption: null`. |
+| **Photo 3 image** | `public/photos/photo-3.jpg` | Replace placeholder. |
+| **Photo 3 caption** | `src/config/event.ts` | `photos[2].caption: null`. |
+| **Face image 1** | `public/faces/face-1.png` | Replace with Angad face/sticker PNG (square, transparent bg). SVG fallback shown if missing. |
+| **Face image 2** | `public/faces/face-2.png` | Same as above. |
+| **Face image 3** | `public/faces/face-3.png` | Same as above. |
+| **Face image 4** | `public/faces/face-4.png` | Same as above. |
+| **Party music** | `public/audio/party.mp3` | Replace with a looping MP3 track (30–90s recommended). Player is hidden if file is unreachable. |
+| **OG / share image** | `public/og.png` | Replace with a 1200×630 image for WhatsApp / iMessage / social previews. |
 
 ---
 
-## 🔒 SEO & Privacy
-The invitation includes `noindex, nofollow` metadata to ensure the private family event is not indexed by public search engines.
+## 🔒 Privacy
 
+`noindex, nofollow` robots meta is set. The invite is not indexed by search engines.
