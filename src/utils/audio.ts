@@ -147,3 +147,4 @@ class SoundController {
 }
 
 export const soundEffects = new SoundController();
+
