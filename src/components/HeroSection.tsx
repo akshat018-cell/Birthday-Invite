@@ -147,3 +147,4 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
     </section>
   );
 }
+
