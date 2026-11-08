@@ -98,7 +98,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
                 Start Time
               </span>
               <span className="text-white text-xs font-semibold truncate">
-                {eventConfig.startTime ?? "Revealing Soon"}
+                {eventConfig.startTime ?? eventConfig.tbaLabel}
               </span>
             </div>
           </div>
@@ -113,7 +113,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
                 Location
               </span>
               <span className="text-white text-xs font-semibold truncate">
-                {eventConfig.venue.name ?? "To be announced"}
+                {eventConfig.venue.name ?? eventConfig.tbaLabel}
               </span>
             </div>
           </div>
