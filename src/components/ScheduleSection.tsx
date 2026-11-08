@@ -119,7 +119,7 @@ export function ScheduleSection() {
         {/* Footer — only factual info */}
         <div className="mt-5 pt-3 border-t border-orange-500/15 flex items-center gap-1.5 text-[11px] text-orange-300/70 font-mono">
           <Clock className="w-3.5 h-3.5 text-orange-400" />
-          <span>All times to be confirmed</span>
+          <span>Times to be confirmed</span>
         </div>
       </div>
     </section>
