@@ -49,6 +49,7 @@ Open in Chrome → DevTools → Toggle Device Mode → iPhone 14 (390px) or any 
 
 | Item | File to edit | What to change |
 | :--- | :--- | :--- |
+| **TBA label** | `src/config/event.ts` | `tbaLabel: "Coming soon"` → default label for any unconfirmed value in cards and chips. |
 | **Party start time** | `src/config/event.ts` | `startTime: null` → e.g. `"5:30 PM"`. Used in Details card, iCal file (timed vs all-day), and Hero chip. |
 | **Venue name** | `src/config/event.ts` | `venue.name: null` → e.g. `"The Grand Arena"`. Shown in Details card, Hero chip, iCal location. |
 | **Venue address** | `src/config/event.ts` | `venue.address: null` → full street address string. Shown below venue name when set. |
