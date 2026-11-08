@@ -57,7 +57,7 @@ export function DesktopBlocker() {
         {/* QR Code Container */}
         <div className="p-4 bg-white rounded-2xl shadow-xl border-4 border-cyan-400/30 relative group mb-6">
           <QRCodeSVG
-            value={currentUrl}
+            value={deployedUrl}
             size={180}
             level="H"
             bgColor="#FFFFFF"
