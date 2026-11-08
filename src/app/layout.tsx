@@ -16,7 +16,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://angad14.party"),
+  metadataBase: new URL("https://angad-birthday.vercel.app"),
   title: "Angad's 14th Birthday Bash",
   description:
     "Official VIP invitation for Angad Khandelwal's 14th Birthday Bash on 11 November 2026. RSVP now!",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Angad's 14th Birthday Bash",
     description:
       "Official VIP invitation for Angad Khandelwal's 14th Birthday Bash on 11 November 2026.",
-    url: "https://angad14.party",
+    url: "https://angad-birthday.vercel.app",
     siteName: "Angad's 14th Birthday",
     images: [
       {
