@@ -196,9 +196,14 @@ export function useMemoryGame() {
   }, []);
 
   const formatTime = (ms: number): string => {
-    const s = Math.floor(ms / 1000);
-    const tenth = Math.floor((ms % 1000) / 100);
-    return `${s}.${tenth}s`;
+    if (ms < 60000) {
+      const s = Math.floor(ms / 1000);
+      const tenth = Math.floor((ms % 1000) / 100);
+      return `${s}.${tenth}s`;
+    }
+    const m = Math.floor(ms / 60000);
+    const remainingSec = Math.floor((ms % 60000) / 1000);
+    return `${m}m ${String(remainingSec).padStart(2, "0")}s`;
   };
 
   return {
