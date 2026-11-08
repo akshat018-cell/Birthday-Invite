@@ -197,7 +197,7 @@ export function GameSection({ onWinCelebration }: { onWinCelebration?: () => voi
           {bestScore && (
             <div className="flex items-center gap-1 text-[10px] font-mono text-fuchsia-300">
               <Trophy className="w-3 h-3 text-fuchsia-400" />
-              <span>Best: {bestScore.moves}m {formatTime(bestScore.timeMs)}</span>
+              <span>Best: {bestScore.moves} moves · {formatTime(bestScore.timeMs)}</span>
             </div>
           )}
         </div>
