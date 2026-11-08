@@ -37,6 +37,8 @@ export interface EventConfig {
   venue: VenueConfig;
   /** Optional dress code, e.g. "Neon / Cyber / Black". Hidden when null. */
   dressCode: string | null;
+  /** Label used for any unconfirmed/undecided values across cards and chips */
+  tbaLabel: string;
   /** WhatsApp phone number for RSVP, international format digits only (e.g. "919876543210") */
   whatsappNumber: string | null;
   /** Intro text shown above the RSVP form */
@@ -92,6 +94,9 @@ export const eventConfig: EventConfig = {
     mapQuery: null,  // e.g. "The Grand Arena City"
     mapLink: null,   // e.g. "https://maps.google.com/?q=..."
   },
+
+  // Default label for unconfirmed values across cards and chips
+  tbaLabel: "Coming soon",
 
   // TODO: Add dress code once decided, e.g. "Neon / Cyber / Black". Set null to hide the card.
   dressCode: null,
@@ -153,9 +158,9 @@ export const eventConfig: EventConfig = {
     },
   ],
 
-  // Fun secret easter-egg unlocked upon winning the memory game
-  secretMessage:
-    "🏆 You cracked it! Angad has a special surprise waiting for you at the party. See you there! ⚡",
+  // Easter egg revealed after beating the memory match game
+  // TODO: The event host can replace this with their own custom text or prize code
+  secretMessage: "You cracked it! Happy 14th, Angad! 🎉",
 
   // Background party music
   audio: {
