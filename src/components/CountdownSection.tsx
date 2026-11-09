@@ -12,7 +12,10 @@ interface TimeRemaining {
   hours: number;
   minutes: number;
   seconds: number;
-  isPast: boolean;
+  /** true once start time (18:00 IST) has passed */
+  isStarted: boolean;
+  /** true once end time (21:00 IST) has passed */
+  isEnded: boolean;
 }
 
 export function CountdownSection() {
@@ -21,7 +24,8 @@ export function CountdownSection() {
     hours: 0,
     minutes: 0,
     seconds: 0,
-    isPast: false,
+    isStarted: false,
+    isEnded: false,
   });
 
   const [mounted, setMounted] = useState(false);
@@ -32,22 +36,27 @@ export function CountdownSection() {
     setMounted(true);
 
     const calculateTime = () => {
-      // Event date: 2026-11-11 in Asia/Kolkata (UTC+5:30)
-      const target = new Date("2026-11-11T18:00:00+05:30").getTime();
-      const now = new Date().getTime();
-      const difference = target - now;
+      // Party: 2026-11-11, 18:00 – 21:00 Asia/Kolkata (UTC+5:30)
+      const start = new Date("2026-11-11T18:00:00+05:30").getTime();
+      const end   = new Date("2026-11-11T21:00:00+05:30").getTime();
+      const now   = new Date().getTime();
 
-      if (difference <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isPast: true });
+      if (now >= end) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isStarted: true, isEnded: true });
+        return;
+      }
+      if (now >= start) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isStarted: true, isEnded: false });
         return;
       }
 
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const difference = start - now;
+      const days    = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours   = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-      setTimeLeft({ days, hours, minutes, seconds, isPast: false });
+      setTimeLeft({ days, hours, minutes, seconds, isStarted: false, isEnded: false });
     };
 
     calculateTime();
@@ -75,11 +84,15 @@ export function CountdownSection() {
   };
 
   const timeUnits = [
-    { label: "DAYS", value: mounted ? timeLeft.days : 0 },
-    { label: "HOURS", value: mounted ? timeLeft.hours : 0 },
-    { label: "MINS", value: mounted ? timeLeft.minutes : 0 },
-    { label: "SECS", value: mounted ? timeLeft.seconds : 0 },
+    { label: "DAYS",  value: mounted ? timeLeft.days    : 0 },
+    { label: "HOURS", value: mounted ? timeLeft.hours   : 0 },
+    { label: "MINS",  value: mounted ? timeLeft.minutes : 0 },
+    { label: "SECS",  value: mounted ? timeLeft.seconds : 0 },
   ];
+
+  /** True once countdown target has passed */
+  const isStarted = mounted && timeLeft.isStarted;
+  const isEnded   = mounted && timeLeft.isEnded;
 
   return (
     <section
@@ -110,13 +123,22 @@ export function CountdownSection() {
         </p>
 
         {/* HUD Countdown Grid */}
-        {timeLeft.isPast ? (
+        {isEnded ? (
           <div className="p-5 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-400/40 text-center">
             <p className="font-heading text-lg font-black text-fuchsia-300 uppercase">
-              🎉 Party Is Live Right Now! 🎉
+              💙 Thanks for celebrating with Angad!
             </p>
             <p className="text-xs text-gray-300 mt-1">
-              Join the dance floor and celebrate with Angad!
+              What a night — hope you had a blast!
+            </p>
+          </div>
+        ) : isStarted ? (
+          <div className="p-5 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-400/40 text-center">
+            <p className="font-heading text-lg font-black text-fuchsia-300 uppercase">
+              🎉 It&apos;s Party Time!
+            </p>
+            <p className="text-xs text-gray-300 mt-1">
+              Angad&apos;s birthday party is live right now — come join!
             </p>
           </div>
         ) : (
