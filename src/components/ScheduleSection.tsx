@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CalendarDays, Clock, ChevronDown } from "lucide-react";
+import { CalendarDays, ChevronDown } from "lucide-react";
 import { eventConfig, ScheduleItem } from "@/config/event";
 import { soundEffects } from "@/utils/audio";
 
@@ -40,7 +40,7 @@ export function ScheduleSection() {
           Party <span className="neon-text-orange">Timeline</span>
         </h2>
         <p className="text-gray-400 text-xs mb-6">
-          The night&apos;s agenda. Times to be confirmed.
+          The night&apos;s agenda.
         </p>
 
         {/* Timeline Items */}
@@ -78,7 +78,7 @@ export function ScheduleSection() {
                       <div className="flex flex-col">
                         <span className="text-[10px] font-mono uppercase text-orange-400/90 font-semibold tracking-wider">
                           Phase 0{index + 1}
-                          {item.time ? ` • ${item.time}` : " • Time TBC"}
+                          {item.time ? ` • ${item.time}` : ""}
                         </span>
                         <h3 className="text-white text-xs font-heading font-bold mt-0.5">
                           {item.title}
@@ -114,12 +114,6 @@ export function ScheduleSection() {
               </div>
             );
           })}
-        </div>
-
-        {/* Footer — only factual info */}
-        <div className="mt-5 pt-3 border-t border-orange-500/15 flex items-center gap-1.5 text-[11px] text-orange-300/70 font-mono">
-          <Clock className="w-3.5 h-3.5 text-orange-400" />
-          <span>Times to be confirmed</span>
         </div>
       </div>
     </section>
