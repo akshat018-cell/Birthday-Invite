@@ -6,6 +6,16 @@ import { Sparkles, Calendar, MapPin, ChevronDown, Zap } from "lucide-react";
 import { eventConfig, formatEventDate } from "@/config/event";
 import { soundEffects } from "@/utils/audio";
 
+/** Format "18:00" → "6:00 PM", "09:30" → "9:30 AM" */
+function formatStartTime(t: string): string {
+  const [hStr, mStr] = t.split(":");
+  const h = parseInt(hStr, 10);
+  const m = parseInt(mStr, 10);
+  const suffix = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${String(m).padStart(2, "0")} ${suffix}`;
+}
+
 export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
   const scrollToRsvp = () => {
     soundEffects.playTap();
@@ -60,7 +70,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
           </span>
         </h1>
         <p className="text-gray-300 text-sm mt-3 max-w-[320px] leading-relaxed">
-          An exclusive celebration for the big 14. Games, food, music, and memories.
+          An exclusive celebration for the big 14. Food, cake and good vibes.
         </p>
       </motion.div>
 
@@ -98,7 +108,9 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
                 Start Time
               </span>
               <span className="text-white text-xs font-semibold truncate">
-                {eventConfig.startTime ?? eventConfig.tbaLabel}
+                {eventConfig.startTime
+                  ? formatStartTime(eventConfig.startTime)
+                  : eventConfig.tbaLabel}
               </span>
             </div>
           </div>
