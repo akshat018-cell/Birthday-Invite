@@ -66,6 +66,7 @@ Open in Chrome → DevTools → Toggle Device Mode → iPhone 14 (390px) or any 
 | **Schedule Protocol** | 3 Stages (Arrival 6:00–6:30 PM, Food 7:00 PM, Cake Cutting 8:00–8:15 PM) | ✅ Configured |
 | **RSVP Form & Copy** | Dynamic template with name, status, guests, note | ✅ Configured |
 | **Memory Game Faces** | 4 custom color emoji face cards (512×512 retina optimized) | ✅ Configured |
+| **Game Victory Screen** | `winTitle` & `winMessage` ("LEVEL CLEARED 🏆") | ✅ Configured |
 
 ---
 
@@ -75,7 +76,6 @@ Open in Chrome → DevTools → Toggle Device Mode → iPhone 14 (390px) or any 
 | :--- | :--- | :--- |
 | **Party music** | `public/audio/party.mp3` | Replace with a looping MP3 track (30–90s recommended). Player is hidden if file is unreachable. |
 | **OG / share image** | `public/og.png` | Replace with a 1200×630 image for WhatsApp / iMessage / social previews. |
-| **Secret game message** | `src/config/event.ts` | `secretMessage` → customize the message revealed after winning the memory match game (currently set to neutral default). |
 
 ---
 

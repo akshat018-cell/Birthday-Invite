@@ -57,8 +57,10 @@ export interface EventConfig {
   rsvpStatuses: RsvpStatus[];
   /** Event schedule timeline */
   schedule: ScheduleItem[];
-  /** Easter egg message unlocked after winning the memory game */
-  secretMessage: string;
+  /** Victory title displayed upon completing the memory game */
+  winTitle: string;
+  /** Victory message displayed beneath the title upon completing the memory game */
+  winMessage: string;
   /** Music audio track metadata */
   audio: {
     src: string;
@@ -144,9 +146,9 @@ export const eventConfig: EventConfig = {
     },
   ],
 
-  // Easter egg revealed after beating the memory match game
-  // TODO: The event host can replace this with their own custom text or prize code
-  secretMessage: "You cracked it! Happy 14th, Angad! 🎉",
+  // Memory match game victory headline & message
+  winTitle: "LEVEL CLEARED 🏆",
+  winMessage: "Sharp memory, champ! See you at Level 14 on 11 Nov! 🎉",
 
   // Background party music
   audio: {

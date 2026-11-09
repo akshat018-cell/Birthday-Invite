@@ -29,7 +29,7 @@ const STEPS: TourStep[] = [
   {
     targetId: "game",
     title: "Play the Game 🎮",
-    body: "Match Angad's faces to unlock a secret message!",
+    body: "Match Angad's faces to clear the level and celebrate!",
   },
 ];
 

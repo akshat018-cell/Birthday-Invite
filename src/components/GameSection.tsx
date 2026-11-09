@@ -200,7 +200,7 @@ export function GameSection({ onWinCelebration }: { onWinCelebration?: () => voi
           Match Angad&apos;s <span className="neon-text-yellow">Faces</span>
         </h2>
         <p className="text-gray-400 text-xs mb-5">
-          Flip cards to find all 4 matching pairs and unlock a secret message!
+          Flip cards to find all 4 matching pairs!
         </p>
 
         {/* HUD — moves + timer */}
@@ -265,17 +265,19 @@ export function GameSection({ onWinCelebration }: { onWinCelebration?: () => voi
                 {moves} moves · {formatTime(elapsedMs)}
               </p>
 
-              {/* Secret message unlock */}
+              {/* Victory announcement */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 }}
-                className="p-3.5 rounded-xl bg-yellow-500/10 border border-yellow-400/30 text-xs text-yellow-200 leading-relaxed mb-4 font-medium text-left"
+                className="w-full p-4 rounded-xl bg-yellow-500/10 border border-yellow-400/30 text-center mb-4 flex flex-col items-center gap-1.5"
               >
-                <span className="text-[10px] font-mono uppercase tracking-widest text-fuchsia-400 block mb-1">
-                  🔓 Secret Message Unlocked
-                </span>
-                &ldquo;{eventConfig.secretMessage}&rdquo;
+                <h4 className="font-heading text-sm sm:text-base font-black uppercase tracking-wider text-yellow-300 neon-text-yellow leading-tight">
+                  {eventConfig.winTitle}
+                </h4>
+                <p className="text-xs text-yellow-100/90 leading-snug max-w-[280px]">
+                  {eventConfig.winMessage}
+                </p>
               </motion.div>
 
               <button
