@@ -32,13 +32,15 @@ export function RsvpSection({ onCelebration }: { onCelebration?: () => void }) {
     if (onCelebration) onCelebration();
 
     const statusLabel = selectedStatus?.label ?? status;
-    const noteText = note.trim() ? note.trim() : "";
+    const noteText = note.trim();
+    const noteLine = noteText ? `Message: ${noteText}` : "";
 
     const message = eventConfig.rsvpMessageTemplate
       .replace("{name}", name.trim())
       .replace("{status}", statusLabel)
       .replace("{guests}", String(guestCount))
-      .replace("{note}", noteText);
+      .replace("\n{noteLine}", noteLine ? `\n${noteLine}` : "")
+      .replace("{noteLine}", noteLine);
 
     const whatsappUrl = `https://wa.me/${eventConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
