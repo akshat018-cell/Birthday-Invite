@@ -154,12 +154,12 @@ export const eventConfig: EventConfig = {
     title: "Angad's 14th Hype Track",
   },
 
-  // Face images used in the memory match game
+  // Face images used in the memory match game (4 custom emoji face cards)
   faces: [
-    { src: "/faces/face-1.png", label: "Face 1" },
-    { src: "/faces/face-2.png", label: "Face 2" },
-    { src: "/faces/face-3.png", label: "Face 3" },
-    { src: "/faces/face-4.png", label: "Face 4" },
+    { src: "/faces/face-1.png", label: "Pink Emoji Face" },
+    { src: "/faces/face-2.png", label: "Violet Emoji Face" },
+    { src: "/faces/face-3.png", label: "Mint Emoji Face" },
+    { src: "/faces/face-4.png", label: "Sunset Emoji Face" },
   ],
 };
 

@@ -31,9 +31,10 @@ function MemoryCard({
   const [imgError, setImgError] = useState(false);
   const isVisible = card.isFlipped || card.isMatched;
 
-  // Neon colours per pair
-  const pairGlow = ["#00F0FF", "#FF2BD6", "#B6FF00", "#FFE600"];
-  const glow = pairGlow[card.pairId];
+  // Neon glow color matched to each card's dominant color palette:
+  // Pair 0: Pink/Pastel (#FF2BD6), Pair 1: Violet/Purple (#A855FF), Pair 2: Mint/Cyan (#00F0FF), Pair 3: Sunset/Orange (#FF8A00)
+  const pairGlow = ["#FF2BD6", "#A855FF", "#00F0FF", "#FF8A00"];
+  const glow = pairGlow[card.pairId] ?? "#FFE600";
 
   return (
     <motion.div
@@ -44,7 +45,7 @@ function MemoryCard({
       }
       transition={{ duration: 0.4 }}
       className="relative"
-      style={{ perspective: "600px" }}
+      style={{ perspective: "800px" }}
     >
       <button
         type="button"
@@ -58,22 +59,27 @@ function MemoryCard({
             ? `${face?.label ?? `Face ${card.pairId + 1}`} — ${card.isMatched ? "matched" : "flipped"}`
             : "Hidden card"
         }
-        className="w-full aspect-square relative focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded-xl"
+        className="w-full aspect-square relative focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded-xl select-none touch-manipulation active:scale-95 transition-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Inner wrapper — the 3-D flip */}
         <motion.div
           animate={{ rotateY: isVisible ? 180 : 0 }}
           transition={{ duration: 0.35, ease: "easeInOut" }}
-          className="relative w-full h-full"
+          className="relative w-full h-full rounded-xl"
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* Back face */}
           <div
-            className="absolute inset-0 rounded-xl bg-black/70 border-2 border-yellow-500/40 flex items-center justify-center overflow-hidden"
-            style={{ backfaceVisibility: "hidden" }}
+            className="absolute inset-0 rounded-xl bg-black/80 border-2 border-yellow-500/40 flex items-center justify-center overflow-hidden shadow-[inset_0_0_12px_rgba(255,230,0,0.12)]"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
           >
-            <Sparkles className="w-6 h-6 text-yellow-400/60" />
+            <div className="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-400/30 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-yellow-400/80" />
+            </div>
           </div>
 
           {/* Front face */}
@@ -81,14 +87,17 @@ function MemoryCard({
             className={`absolute inset-0 rounded-xl overflow-hidden flex items-center justify-center ${
               card.isMatched
                 ? "border-2"
-                : "border border-white/10"
+                : "border border-white/20"
             }`}
             style={{
               backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
-              borderColor: card.isMatched ? glow : undefined,
-              boxShadow: card.isMatched ? `0 0 16px ${glow}60` : undefined,
-              background: "linear-gradient(135deg, #0a0a1a 0%, #12122a 100%)",
+              borderColor: card.isMatched ? glow : "rgba(255,255,255,0.25)",
+              boxShadow: card.isMatched
+                ? `0 0 16px ${glow}90, inset 0 0 10px ${glow}40`
+                : "0 4px 15px rgba(0,0,0,0.5)",
+              background: "#0c0c1a",
             }}
           >
             {!imgError ? (
@@ -96,7 +105,9 @@ function MemoryCard({
                 src={face?.src ?? ""}
                 alt={face?.label ?? `Face ${card.pairId + 1}`}
                 fill
-                className="object-cover"
+                sizes="(max-width: 430px) 25vw, 100px"
+                className="object-cover select-none pointer-events-none"
+                priority
                 onError={() => setImgError(true)}
               />
             ) : (
@@ -104,7 +115,7 @@ function MemoryCard({
             )}
             {/* Matched sparkle overlay */}
             {card.isMatched && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/15">
                 <Sparkles
                   className="w-5 h-5 animate-spin"
                   style={{ color: glow, animationDuration: "3s" }}
@@ -132,6 +143,16 @@ export function GameSection({ onWinCelebration }: { onWinCelebration?: () => voi
   } = useMemoryGame();
 
   const [celebrationFired, setCelebrationFired] = React.useState(false);
+
+  // Preload face images in background cache so first card flips are instantaneous
+  React.useEffect(() => {
+    eventConfig.faces.forEach((f) => {
+      if (typeof window !== "undefined" && f.src) {
+        const img = new window.Image();
+        img.src = f.src;
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     if (isWon && !celebrationFired) {
