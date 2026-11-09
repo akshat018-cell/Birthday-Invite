@@ -6,7 +6,6 @@ import { HeroSection } from "@/components/HeroSection";
 import { CountdownSection } from "@/components/CountdownSection";
 import { DetailsSection } from "@/components/DetailsSection";
 import { ScheduleSection } from "@/components/ScheduleSection";
-import { PhotosSection } from "@/components/PhotosSection";
 import { RsvpSection } from "@/components/RsvpSection";
 import { GameSection } from "@/components/GameSection";
 import { AudioPlayer } from "@/components/AudioPlayer";
@@ -67,13 +66,10 @@ export default function HomePage() {
       {/* 4. SCHEDULE TIMELINE (Orange #FF8A00) */}
       <ScheduleSection />
 
-      {/* 5. PHOTO GALLERY (Violet #A855FF) */}
-      <PhotosSection />
-
-      {/* 6. RSVP FORM (Green #39FF14) */}
+      {/* 5. RSVP FORM (Green #39FF14) */}
       <RsvpSection onCelebration={launchConfetti} />
 
-      {/* 7. MEMORY MATCH GAME (Yellow #FFE600 & Pink #FF2BD6) */}
+      {/* 6. MEMORY MATCH GAME (Yellow #FFE600 & Pink #FF2BD6) */}
       <GameSection onWinCelebration={launchConfetti} />
 
       {/* Footer */}
