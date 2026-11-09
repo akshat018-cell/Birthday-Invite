@@ -17,9 +17,9 @@ const STEPS: TourStep[] = [
     body: "This is Angad's birthday invite. Scroll to explore the details.",
   },
   {
-    targetId: "countdown",
-    title: "Countdown ⏱️",
-    body: "Live countdown to the milestone. Save it to your calendar!",
+    targetId: "details",
+    title: "Party Details 📍",
+    body: "Check out the confirmed venue, map, directions, and timings.",
   },
   {
     targetId: "rsvp",
@@ -28,7 +28,7 @@ const STEPS: TourStep[] = [
   },
   {
     targetId: "game",
-    title: "Mini-Game 🎮",
+    title: "Play the Game 🎮",
     body: "Match Angad's faces to unlock a secret message!",
   },
 ];
