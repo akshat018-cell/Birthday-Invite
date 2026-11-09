@@ -18,9 +18,7 @@ export function WhatsAppFab() {
       return;
     }
 
-    const message = eventConfig.contactMessageTemplate
-      .replace("{name}", "")
-      .replace("{note}", "");
+    const message = eventConfig.contactMessageTemplate;
     const url = `https://wa.me/${eventConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
