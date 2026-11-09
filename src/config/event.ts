@@ -11,7 +11,7 @@ export interface VenueConfig {
 
 export interface ScheduleItem {
   id: string;
-  /** E.g. "5:30 PM" or "18:00" or null if exact timing is pending */
+  /** E.g. "6:00 – 6:30 PM" or null if exact timing is pending */
   time: string | null;
   title: string;
   emoji: string;
@@ -33,21 +33,25 @@ export interface EventConfig {
   date: string;
   /** Timezone for countdown and event timing */
   timezone: string;
-  /** Start time e.g. "17:30" or "5:30 PM", null if undecided */
+  /** Start time in 24h format e.g. "18:00", null if undecided */
   startTime: string | null;
+  /** End time in 24h format e.g. "21:00", null if undecided */
+  endTime: string | null;
+  /** Display string for the time range e.g. "6:00 PM – 9:00 PM" */
+  timeDisplay: string | null;
+  /** Name of the event host (Angad's elder brother) */
+  hostName: string;
   /** Venue details */
   venue: VenueConfig;
-  /** Optional dress code, e.g. "Neon / Cyber / Black". Hidden when null. */
-  dressCode: string | null;
   /** Label used for any unconfirmed/undecided values across cards and chips */
   tbaLabel: string;
   /** WhatsApp phone number for RSVP, international format digits only (e.g. "919876543210") */
   whatsappNumber: string | null;
   /** Intro text shown above the RSVP form */
   rsvpIntro: string;
-  /** Template for WhatsApp RSVP message. Tokens: {name}, {guests}, {status}, {note} */
+  /** Template for WhatsApp RSVP message. Tokens: {name}, {guests}, {status}, {noteLine} */
   rsvpMessageTemplate: string;
-  /** Template for contacting the host. Tokens: {name}, {note} */
+  /** Template for contacting the host. No tokens needed. */
   contactMessageTemplate: string;
   /** RSVP status options shown to the guest */
   rsvpStatuses: RsvpStatus[];
@@ -60,12 +64,6 @@ export interface EventConfig {
     src: string;
     title: string;
   };
-  /** Gallery photos configuration */
-  photos: {
-    src: string;
-    caption: string | null;
-    alt: string;
-  }[];
   /** Face images used in the memory match game (4 required; fallback SVGs shown when missing) */
   faces: {
     src: string;
@@ -87,34 +85,33 @@ export const eventConfig: EventConfig = {
   date: "2026-11-11",
   timezone: "Asia/Kolkata",
 
-  // TODO: Finalize party start time (e.g. "5:30 PM" or "18:00")
-  startTime: null,
+  startTime: "18:00",
+  endTime: "21:00",
+  timeDisplay: "6:00 PM – 9:00 PM",
 
-  // TODO: Finalize venue location details
+  hostName: "Akshat",
+
   venue: {
-    name: null,      // e.g. "The Grand Arena"
-    address: null,   // e.g. "123 Main Street, City"
-    mapQuery: null,  // e.g. "The Grand Arena City"
-    mapLink: null,   // e.g. "https://maps.google.com/?q=..."
+    name: "Solaris Hotel & Club",
+    address: "Near, Jay Nagar, Rajiv Gandhi Cir, Indore, Madhya Pradesh 452001",
+    mapQuery: "Solaris Hotel & Club, Jay Nagar, Indore",
+    mapLink: "https://maps.app.goo.gl/FBGLfBcyUuNFBH666",
   },
 
   // Default label for unconfirmed values across cards and chips
   tbaLabel: "Coming soon",
 
-  // TODO: Add dress code once decided, e.g. "Neon / Cyber / Black". Set null to hide the card.
-  dressCode: null,
+  // WhatsApp number in international format, digits only (no '+' or spaces)
+  whatsappNumber: "917974644795",
 
-  // TODO: Enter host WhatsApp number in international format, digits only (no '+' or spaces)
-  // e.g. "919876543210"
-  whatsappNumber: null,
+  rsvpIntro: "Confirm your spot with Akshat on WhatsApp, it takes 10 seconds.",
 
-  rsvpIntro: "Confirm your spot on WhatsApp, it takes 10 seconds.",
-
+  // {noteLine} = "Message: <note>" when a note is entered, or "" when empty
   rsvpMessageTemplate:
-    "Hey Angad! RSVP for {name}: {status}! 🚀 Party of {guests}. {note}",
+    "Hi Akshat! 🎉 RSVP for Angad's 14th birthday party (11 Nov, Solaris Hotel & Club).\n\nName: {name}\nStatus: {status}\nGuests: {guests}\n{noteLine}",
 
   contactMessageTemplate:
-    "Hey Angad! Message from {name}: {note}",
+    "Hi Akshat! I have a question about Angad's 14th birthday party on 11 Nov.",
 
   rsvpStatuses: [
     { value: "attending",  label: "I'm in! 🎉" },
@@ -122,42 +119,28 @@ export const eventConfig: EventConfig = {
     { value: "declined",   label: "Can't make it 😢" },
   ],
 
-  // Schedule timeline — only the five agreed items. Descriptions are optional.
+  // Schedule timeline — exactly three confirmed items. Descriptions are optional.
   schedule: [
     {
       id: "arrival",
-      time: null, // TODO: Set time e.g. "5:30 PM"
+      time: "6:00 – 6:30 PM",
       title: "Arrival",
       emoji: "🔥",
-      description: null, // TODO: Add description when decided
-    },
-    {
-      id: "cake",
-      time: null, // TODO: Set time e.g. "7:00 PM"
-      title: "Cake Cutting",
-      emoji: "🎂",
-      description: null, // TODO: Add description when decided
+      description: null,
     },
     {
       id: "food",
-      time: null, // TODO: Set time e.g. "7:30 PM"
+      time: "7:00 PM",
       title: "Food",
       emoji: "🍕",
-      description: null, // TODO: Add description when decided
+      description: null,
     },
     {
-      id: "games",
-      time: null, // TODO: Set time e.g. "8:15 PM"
-      title: "Games",
-      emoji: "🎮",
-      description: null, // TODO: Add description when decided
-    },
-    {
-      id: "dance",
-      time: null, // TODO: Set time e.g. "9:00 PM"
-      title: "Dance Floor",
-      emoji: "🪩",
-      description: null, // TODO: Add description when decided
+      id: "cake",
+      time: "8:00 – 8:15 PM",
+      title: "Cake Cutting",
+      emoji: "🎂",
+      description: null,
     },
   ],
 
@@ -170,25 +153,6 @@ export const eventConfig: EventConfig = {
     src: "/audio/party.mp3",
     title: "Angad's 14th Hype Track",
   },
-
-  // Photo gallery (caption is optional — set null to hide)
-  photos: [
-    {
-      src: "/photos/photo-1.jpg",
-      caption: null, // TODO: Add caption e.g. "Level 14 unlocked"
-      alt: "Angad at his birthday",
-    },
-    {
-      src: "/photos/photo-2.jpg",
-      caption: null, // TODO: Add caption
-      alt: "Angad birthday photo",
-    },
-    {
-      src: "/photos/photo-3.jpg",
-      caption: null, // TODO: Add caption
-      alt: "Angad birthday photo",
-    },
-  ],
 
   // Face images used in the memory match game
   faces: [
