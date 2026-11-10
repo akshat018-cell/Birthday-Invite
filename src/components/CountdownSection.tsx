@@ -179,7 +179,7 @@ export function CountdownSection() {
         <div className="mt-4 pt-3 border-t border-fuchsia-500/15 flex items-center justify-between text-[11px] text-fuchsia-300/70 font-mono">
           <span className="flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-fuchsia-400" />
-            Milestone: 14 Years
+            Milestone: {eventConfig.turningAge} Years
           </span>
           <span className="flex items-center gap-1">
             <Bell className="w-3 h-3 text-fuchsia-400" />
