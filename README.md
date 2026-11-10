@@ -1,6 +1,6 @@
-# ⚡ Angad's 14th Birthday Bash — VIP Invitation Web App
+# ⚡ Angad's 13th Birthday Bash — VIP Invitation Web App
 
-A production-grade, mobile-only digital birthday invitation for **Angad Khandelwal's 14th Birthday** on **11 November 2026** (Asia/Kolkata).
+A production-grade, mobile-only digital birthday invitation for **Angad Khandelwal's 13th Birthday** on **11 November 2026** (Asia/Kolkata).
 
 ---
 
@@ -54,7 +54,7 @@ Open in Chrome → DevTools → Toggle Device Mode → iPhone 14 (390px) or any 
 
 | Detail | Configured Value | Status |
 | :--- | :--- | :--- |
-| **Guest of Honour** | Angad Khandelwal (Turning 14) | ✅ Configured |
+| **Guest of Honour** | Angad Khandelwal (Turning 13) | ✅ Configured |
 | **Date & Timezone** | 11 November 2026 (Asia/Kolkata +05:30) | ✅ Configured |
 | **Party Hours** | 6:00 PM – 9:00 PM (`18:00` to `21:00`) | ✅ Configured |
 | **Host Contact** | Akshat (Angad's elder brother) | ✅ Configured |
