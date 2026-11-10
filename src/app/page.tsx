@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { eventConfig } from "@/config/event";
+import { eventConfig, getAgeOrdinal } from "@/config/event";
 import { HeroSection } from "@/components/HeroSection";
 import { CountdownSection } from "@/components/CountdownSection";
 import { DetailsSection } from "@/components/DetailsSection";
@@ -75,7 +75,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="pt-6 pb-8 text-center flex flex-col items-center gap-2">
         <p className="font-heading text-xs uppercase tracking-widest text-gray-500">
-          Angad Khandelwal • 14th Birthday
+          {eventConfig.guestOfHonour} • {getAgeOrdinal(eventConfig.turningAge)} Birthday
         </p>
         <p className="text-[10px] text-gray-600 font-mono">11.11.2026 • Exclusive VIP Experience</p>
       </footer>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Unbounded, Outfit } from "next/font/google";
 import "./globals.css";
 import { DesktopBlocker } from "@/components/DesktopBlocker";
+import { eventConfig, getAgeOrdinal } from "@/config/event";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -15,11 +16,14 @@ const outfit = Outfit({
   display: "swap",
 });
 
+const ageOrdinal = getAgeOrdinal(eventConfig.turningAge);
+const pageTitle = `${eventConfig.guestOfHonour}'s ${ageOrdinal} Birthday Bash`;
+const pageDescription = `Official VIP invitation for ${eventConfig.guestOfHonour}'s ${ageOrdinal} Birthday Bash on 11 November 2026. RSVP now!`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://angad-birthday.vercel.app"),
-  title: "Angad's 14th Birthday Bash",
-  description:
-    "Official VIP invitation for Angad Khandelwal's 14th Birthday Bash on 11 November 2026. RSVP now!",
+  metadataBase: new URL(eventConfig.deployedUrl),
+  title: pageTitle,
+  description: pageDescription,
   robots: {
     index: false,
     follow: false,
@@ -29,17 +33,16 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Angad's 14th Birthday Bash",
-    description:
-      "Official VIP invitation for Angad Khandelwal's 14th Birthday Bash on 11 November 2026.",
-    url: "https://angad-birthday.vercel.app",
-    siteName: "Angad's 14th Birthday",
+    title: pageTitle,
+    description: `Official VIP invitation for ${eventConfig.guestOfHonour}'s ${ageOrdinal} Birthday Bash on 11 November 2026.`,
+    url: eventConfig.deployedUrl,
+    siteName: `${eventConfig.guestOfHonour}'s ${ageOrdinal} Birthday`,
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Angad's 14th Birthday Bash",
+        alt: pageTitle,
       },
     ],
     locale: "en_US",
@@ -47,9 +50,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Angad's 14th Birthday Bash",
-    description:
-      "Official VIP invitation for Angad Khandelwal's 14th Birthday Bash on 11 November 2026.",
+    title: pageTitle,
+    description: `Official VIP invitation for ${eventConfig.guestOfHonour}'s ${ageOrdinal} Birthday Bash on 11 November 2026.`,
     images: ["/og.png"],
   },
 };
