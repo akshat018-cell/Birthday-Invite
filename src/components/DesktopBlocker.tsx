@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Smartphone, Sparkles, Copy, Check } from "lucide-react";
-import { eventConfig } from "@/config/event";
+import { eventConfig, getAgeOrdinal } from "@/config/event";
 
 export function DesktopBlocker() {
   const deployedUrl = eventConfig.deployedUrl;
@@ -45,7 +45,7 @@ export function DesktopBlocker() {
         <h1 className="font-heading text-2xl font-black uppercase tracking-tight text-white mb-2">
           {eventConfig.guestOfHonour}&apos;s
           <span className="block neon-text-cyan">
-            {eventConfig.turningAge}th Birthday Bash
+            {getAgeOrdinal(eventConfig.turningAge)} Birthday Bash
           </span>
         </h1>
 
@@ -92,7 +92,7 @@ export function DesktopBlocker() {
 
       {/* Footer watermark */}
       <div className="absolute bottom-6 text-center text-xs text-gray-600 font-mono">
-        11.11.2026 • 14th Milestone • Mobile Only
+        11.11.2026 • {getAgeOrdinal(eventConfig.turningAge)} Milestone • Mobile Only
       </div>
     </div>
   );
