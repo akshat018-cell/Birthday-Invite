@@ -70,7 +70,7 @@ export function HeroSection({ onRsvpClick }: { onRsvpClick?: () => void }) {
           </span>
         </h1>
         <p className="text-gray-300 text-sm mt-3 max-w-[320px] leading-relaxed">
-          An exclusive celebration for the big 14. Food, cake and good vibes.
+          An exclusive celebration for the big {eventConfig.turningAge}. Food, cake and good vibes.
         </p>
       </motion.div>
 
