@@ -33,7 +33,7 @@ const STEPS: TourStep[] = [
   },
 ];
 
-const STORAGE_KEY = "angad14-tour-done";
+const STORAGE_KEY = "angad13-tour-done";
 
 function getOverlayRect(id: string): DOMRect | null {
   const el = document.getElementById(id);
