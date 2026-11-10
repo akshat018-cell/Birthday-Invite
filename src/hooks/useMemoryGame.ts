@@ -14,7 +14,9 @@ export interface BestScore {
   timeMs: number;
 }
 
-const STORAGE_KEY = "angad13-memory-best";
+// Stable permanent key that does not change across versions or deployments
+const STORAGE_KEY = "angad-memory-best";
+const LEGACY_STORAGE_KEYS = ["angad13-memory-best", "angad14-memory-best"];
 
 function shuffleFisherYates<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -37,19 +39,53 @@ function buildDeck(): CardState[] {
 }
 
 function loadBest(): BestScore | null {
+  if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as BestScore) : null;
+    for (const key of [STORAGE_KEY, ...LEGACY_STORAGE_KEYS]) {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (
+          parsed &&
+          typeof parsed === "object" &&
+          typeof parsed.moves === "number" &&
+          typeof parsed.timeMs === "number" &&
+          parsed.moves > 0 &&
+          parsed.timeMs > 0
+        ) {
+          // Migrate legacy key to permanent key
+          if (key !== STORAGE_KEY) {
+            try {
+              localStorage.setItem(STORAGE_KEY, raw);
+            } catch {
+              // ignore
+            }
+          }
+          return { moves: parsed.moves, timeMs: parsed.timeMs };
+        }
+      }
+    }
+    return null;
   } catch {
     return null;
   }
 }
 
 function saveBest(score: BestScore) {
+  if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(score));
+    const serialized = JSON.stringify(score);
+    localStorage.setItem(STORAGE_KEY, serialized);
+    // Sync to legacy keys to ensure compatibility across older client sessions
+    for (const k of LEGACY_STORAGE_KEYS) {
+      try {
+        localStorage.setItem(k, serialized);
+      } catch {
+        // ignore
+      }
+    }
   } catch {
-    // ignore storage errors
+    // ignore quota/security storage errors
   }
 }
 
@@ -150,15 +186,16 @@ export function useMemoryGame() {
           // Check best score (fewer moves wins, then faster time)
           const current: BestScore = { moves: nextMoves, timeMs: finalMs };
           setBestScore((prev) => {
+            const existing = prev ?? loadBest();
             if (
-              !prev ||
-              nextMoves < prev.moves ||
-              (nextMoves === prev.moves && finalMs < prev.timeMs)
+              !existing ||
+              nextMoves < existing.moves ||
+              (nextMoves === existing.moves && finalMs < existing.timeMs)
             ) {
               saveBest(current);
               return current;
             }
-            return prev;
+            return existing;
           });
         }
       } else {

@@ -33,7 +33,39 @@ const STEPS: TourStep[] = [
   },
 ];
 
-const STORAGE_KEY = "angad13-tour-done";
+const STORAGE_KEY = "angad-tour-done";
+const LEGACY_STORAGE_KEYS = ["angad13-tour-done", "angad14-tour-done"];
+
+function isTourDone(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    for (const key of [STORAGE_KEY, ...LEGACY_STORAGE_KEYS]) {
+      if (localStorage.getItem(key)) {
+        if (key !== STORAGE_KEY) {
+          try {
+            localStorage.setItem(STORAGE_KEY, "1");
+          } catch {}
+        }
+        return true;
+      }
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+function setTourDone(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(STORAGE_KEY, "1");
+    for (const k of LEGACY_STORAGE_KEYS) {
+      try {
+        localStorage.setItem(k, "1");
+      } catch {}
+    }
+  } catch {}
+}
 
 function getOverlayRect(id: string): DOMRect | null {
   const el = document.getElementById(id);
@@ -50,11 +82,7 @@ export function GuidedTour() {
 
   const dismiss = useCallback(() => {
     setVisible(false);
-    try {
-      localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      // ignore
-    }
+    setTourDone();
     document.body.style.overflow = "";
   }, []);
 
@@ -65,11 +93,7 @@ export function GuidedTour() {
   }, [visible, step]);
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem(STORAGE_KEY)) return;
-    } catch {
-      // ignore storage errors
-    }
+    if (isTourDone()) return;
     const t = setTimeout(() => {
       setVisible(true);
       document.body.style.overflow = "hidden";
