@@ -82,7 +82,7 @@ export interface EventConfig {
  */
 export const eventConfig: EventConfig = {
   guestOfHonour: "Angad Khandelwal",
-  turningAge: 14,
+  turningAge: 13,
   deployedUrl: "https://angad-birthday.vercel.app/",
   date: "2026-11-11",
   timezone: "Asia/Kolkata",
@@ -110,10 +110,10 @@ export const eventConfig: EventConfig = {
 
   // {noteLine} = "Message: <note>" when a note is entered, or "" when empty
   rsvpMessageTemplate:
-    "Hi Akshat! 🎉 RSVP for Angad's 14th birthday party (11 Nov, Solaris Hotel & Club).\n\nName: {name}\nStatus: {status}\nGuests: {guests}\n{noteLine}",
+    "Hi Akshat! 🎉 RSVP for Angad's 13th birthday party (11 Nov, Solaris Hotel & Club).\n\nName: {name}\nStatus: {status}\nGuests: {guests}\n{noteLine}",
 
   contactMessageTemplate:
-    "Hi Akshat! I have a question about Angad's 14th birthday party on 11 Nov.",
+    "Hi Akshat! I have a question about Angad's 13th birthday party on 11 Nov.",
 
   rsvpStatuses: [
     { value: "attending",  label: "I'm in! 🎉" },
@@ -148,12 +148,12 @@ export const eventConfig: EventConfig = {
 
   // Memory match game victory headline & message
   winTitle: "LEVEL CLEARED 🏆",
-  winMessage: "Sharp memory, champ! See you at Level 14 on 11 Nov! 🎉",
+  winMessage: "Sharp memory, champ! See you at Level 13 on 11 Nov! 🎉",
 
   // Background party music
   audio: {
     src: "/audio/party.mp3",
-    title: "Angad's 14th Hype Track",
+    title: "Angad's 13th Hype Track",
   },
 
   // Face images used in the memory match game (4 custom emoji face cards)
@@ -164,6 +164,22 @@ export const eventConfig: EventConfig = {
     { src: "/faces/face-4.png", label: "Sunset Emoji Face" },
   ],
 };
+
+/**
+ * Helper to get ordinal suffix for an integer (e.g., 13 -> "13th", 1 -> "1st", 2 -> "2nd", 3 -> "3rd")
+ */
+export function getOrdinal(n: number): string {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+/**
+ * Returns the guest of honour's turning age with ordinal suffix (e.g. "13th")
+ */
+export function getAgeOrdinal(age: number = eventConfig.turningAge): string {
+  return getOrdinal(age);
+}
 
 /**
  * Format date for display in the local timezone
