@@ -197,7 +197,7 @@ export function GameSection({ onWinCelebration }: { onWinCelebration?: () => voi
         </div>
 
         <h2 className="font-heading text-xl font-black uppercase tracking-tight text-white mb-1">
-          Match Emojis&apos;s <span className="neon-text-yellow">Faces</span>
+          Match Emoji&apos;s <span className="neon-text-yellow">Faces</span>
         </h2>
         <p className="text-gray-400 text-xs mb-5">
           Flip cards to find all 4 matching pairs!
