@@ -14,7 +14,7 @@ export interface BestScore {
   timeMs: number;
 }
 
-const STORAGE_KEY = "angad14-memory-best";
+const STORAGE_KEY = "angad13-memory-best";
 
 function shuffleFisherYates<T>(arr: T[]): T[] {
   const a = [...arr];
