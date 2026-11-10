@@ -199,7 +199,7 @@ export function RsvpSection({ onCelebration }: { onCelebration?: () => void }) {
                     aria-label="Increase guest count"
                     onClick={() => {
                       soundEffects.playTap();
-                      setGuestCount((c) => Math.min(10, c + 1));
+                      setGuestCount((c) => Math.min(2, c + 1));
                     }}
                     className="tap-target w-10 h-10 rounded-lg bg-green-500/10 border border-green-400/30 text-green-300 text-lg font-bold flex items-center justify-center active:scale-95"
                   >
